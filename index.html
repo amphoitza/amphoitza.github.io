@@ -267,7 +267,6 @@
     <section class="clip" id="clip" hidden>
       <div class="clip-head">
         <h2>Clip of the <span>day</span></h2>
-        <button class="btn" id="reroll" title="Pick a different clip for today">🎲 Another</button>
       </div>
       <div class="clip-card">
         <div class="clip-wrap" id="clipWrap"><div class="clip-frame" id="clipFrame"></div></div>
@@ -588,7 +587,7 @@ document.addEventListener("visibilitychange", () => {
 const CHANNEL_NAMES = { baiatucucaiacu: "BaiatuCuCaiacu", ggugateste: "GGuGateste" };
 let videos = [];
 
-let clipDay = null, shownId = null;
+let clipDay = null;
 
 // FNV-1a: tiny string hash, same result in every browser.
 function hash(str) {
@@ -600,22 +599,16 @@ function hash(str) {
 // Same clip on every device: each clip gets a score from (date, id) and the highest wins.
 // Only clips added before today count, so new uploads can't swap today's clip mid-day,
 // and removing a clip that didn't win changes nothing.
-function pickClip(reroll = false) {
+function pickClip() {
   const day = today();
   const pool = videos.filter((v) => !v.added || v.added < day);
   if (!pool.length) return null;
   clipDay = day;
-  if (reroll) {
-    // "Another" is just for this device, and resets on reload.
-    const others = pool.filter((v) => v.id !== shownId);
-    return others[Math.floor(Math.random() * others.length)] || pool[0];
-  }
   return pool.reduce((best, v) => (hash(`${day}|${v.id}`) > hash(`${day}|${best.id}`) ? v : best));
 }
 
 function showClip(v) {
   if (!v) return;
-  shownId = v.id;
   const short = v.type === "short";
   $("clipWrap").classList.toggle("short", short);
   $("clipFrame").className = "clip-frame" + (short ? " short" : "");
@@ -628,8 +621,6 @@ function showClip(v) {
   $("clipType").className = "pill" + (short ? " short" : "");
   $("clip").hidden = false;
 }
-
-$("reroll").onclick = () => showClip(pickClip(true));
 
 fetch("videos.json", { cache: "no-cache" })
   .then((r) => r.json())
