@@ -22,3 +22,12 @@ Everything is stored in your browser (`localStorage`) — no server, no account.
 
 - Online: GitHub Pages (free) — `https://amphoitza.github.io/`
 - Offline: just double-click `index.html`.
+
+## Wordle opener (optional)
+
+`wordle-penis.user.js` types a first word into Wordle România and NYT Wordle once a day.
+
+1. Install the [Tampermonkey](https://www.tampermonkey.net/) browser extension (in Chrome, also turn on "Allow user scripts" for it in the extension's details page).
+2. Open https://amphoitza.github.io/wordle-penis.user.js and click **Install**.
+
+Change `WORD` or set `SUBMIT = false` at the top of the script to only type the word.
