@@ -20,5 +20,5 @@ Everything is stored in your browser (`localStorage`) — no server, no account.
 
 ## Running it
 
-- Online: GitHub Pages (free) — `https://razvanpetrascu28.github.io/daily-games/`
+- Online: GitHub Pages (free) — `https://razvanpetrascu28.github.io/amphoitza/`
 - Offline: just double-click `index.html`.

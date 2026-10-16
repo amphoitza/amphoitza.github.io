@@ -214,7 +214,6 @@
       <button class="btn" id="openAll" title="Your browser may ask you to allow pop-ups the first time">Open all</button>
       <button class="btn" id="resetToday">Reset today</button>
       <span class="spacer"></span>
-      <button class="btn" id="soundBtn" title="Toggle sounds"></button>
       <button class="btn" id="editBtn">Edit</button>
     </div>
     <p class="note" id="popupNote" hidden>Your browser blocked some tabs. Click the pop-up icon in the address bar, choose “Always allow pop-ups” for this site, then try again.</p>
@@ -281,7 +280,7 @@ function load() {
       return s;
     }
   } catch (e) {}
-  return { games: structuredClone(DEFAULT_GAMES), day: today(), done: [], streak: 0, best: 0, lastComplete: null, sound: true };
+  return { games: structuredClone(DEFAULT_GAMES), day: today(), done: [], streak: 0, best: 0, lastComplete: null };
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
 
@@ -291,7 +290,6 @@ function today(d = new Date()) {
 function yesterday() { const d = new Date(); d.setDate(d.getDate() - 1); return today(d); }
 
 let state = load();
-if (state.sound === undefined) state.sound = true;
 
 // New day: clear checkmarks, keep streak only if yesterday was completed.
 function rollDay() {
@@ -307,20 +305,6 @@ function isDone(g) { return state.done.includes(g.url); }
 function nextGame() { return state.games.find((g) => !isDone(g)); }
 
 // ---------- juice ----------
-let audio;
-function blip(freqs, dur = 0.09, type = "square", gain = 0.05) {
-  if (!state.sound) return;
-  try {
-    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-    freqs.forEach((f, i) => {
-      const t = audio.currentTime + i * dur;
-      const o = audio.createOscillator(), v = audio.createGain();
-      o.type = type; o.frequency.setValueAtTime(f, t);
-      v.gain.setValueAtTime(gain, t); v.gain.exponentialRampToValueAtTime(0.0001, t + dur * 1.6);
-      o.connect(v).connect(audio.destination); o.start(t); o.stop(t + dur * 1.7);
-    });
-  } catch (e) {}
-}
 function burst(el, color) {
   if (typeof confetti !== "function") return;
   const r = el.getBoundingClientRect();
@@ -367,10 +351,7 @@ function markDone(g, value = true) {
     const tile = document.querySelector(`[data-url="${CSS.escape(g.url)}"]`);
     if (tile) burst(tile, meta(g, state.games.indexOf(g)).color);
     bump($("count"));
-    blip(completedNow ? [523, 659, 784, 1047] : [660, 990], completedNow ? 0.11 : 0.07);
     if (completedNow) { bump($("streak")); bigCelebration(); }
-  } else if (!value && was) {
-    blip([300, 200], 0.06, "triangle");
   }
 }
 
@@ -439,7 +420,6 @@ function render() {
   });
   justDone = null;
 
-  $("soundBtn").textContent = state.sound ? "♪ On" : "♪ Off";
 }
 
 function openNext() {
@@ -496,7 +476,6 @@ function showEdit(on) {
 $("next").onclick = openNext;
 $("openAll").onclick = openAll;
 $("resetToday").onclick = () => { state.done = []; markDone({ url: "" }, false); };
-$("soundBtn").onclick = () => { state.sound = !state.sound; save(); render(); blip([880], 0.05); };
 $("editBtn").onclick = () => showEdit(true);
 $("addGame").onclick = () => { draft.push({ name: "", url: "" }); renderEdit(); $("editList").lastChild.querySelector("input").focus(); };
 $("defaults").onclick = () => { draft = structuredClone(DEFAULT_GAMES); renderEdit(); };
