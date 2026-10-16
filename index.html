@@ -580,7 +580,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.hidden) return;
   rollDay();
   render();
-  if (videos.length && (!state.clip || state.clip.day !== today())) showClip(pickClip());
+  if (videos.length && clipDay !== today()) showClip(pickClip());
 });
 
 // ---------- clip of the day ----------
@@ -588,20 +588,34 @@ document.addEventListener("visibilitychange", () => {
 const CHANNEL_NAMES = { baiatucucaiacu: "BaiatuCuCaiacu", ggugateste: "GGuGateste" };
 let videos = [];
 
+let clipDay = null, shownId = null;
+
+// FNV-1a: tiny string hash, same result in every browser.
+function hash(str) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+  return h >>> 0;
+}
+
+// Same clip on every device: each clip gets a score from (date, id) and the highest wins.
+// Only clips added before today count, so new uploads can't swap today's clip mid-day,
+// and removing a clip that didn't win changes nothing.
 function pickClip(reroll = false) {
-  if (!videos.length) return null;
-  const saved = state.clip && state.clip.day === today() && videos.find((v) => v.id === state.clip.id);
-  if (saved && !reroll) return saved;
-  let v;
-  do { v = videos[Math.floor(Math.random() * videos.length)]; }
-  while (videos.length > 1 && saved && v.id === saved.id);
-  state.clip = { day: today(), id: v.id };
-  save();
-  return v;
+  const day = today();
+  const pool = videos.filter((v) => !v.added || v.added < day);
+  if (!pool.length) return null;
+  clipDay = day;
+  if (reroll) {
+    // "Another" is just for this device, and resets on reload.
+    const others = pool.filter((v) => v.id !== shownId);
+    return others[Math.floor(Math.random() * others.length)] || pool[0];
+  }
+  return pool.reduce((best, v) => (hash(`${day}|${v.id}`) > hash(`${day}|${best.id}`) ? v : best));
 }
 
 function showClip(v) {
   if (!v) return;
+  shownId = v.id;
   const short = v.type === "short";
   $("clipWrap").classList.toggle("short", short);
   $("clipFrame").className = "clip-frame" + (short ? " short" : "");

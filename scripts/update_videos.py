@@ -3,6 +3,7 @@
 Run daily by .github/workflows/videos.yml. If a channel tab fails to load,
 its previous entries are kept so a flaky run never shrinks the list.
 """
+import datetime
 import json
 import pathlib
 import subprocess
@@ -38,10 +39,15 @@ def main():
             print(f"{handle}/{tab}: {len(items)}")
             videos += items
 
+    # "added" is the day a clip was first seen. The page only picks from clips added
+    # before today, so a new upload can't change today's clip halfway through the day.
+    first_seen = {v["id"]: v.get("added") for v in old}
+    today = datetime.date.today().isoformat()
     seen, unique = set(), []
     for v in videos:
         if v["id"] not in seen:
             seen.add(v["id"])
+            v["added"] = first_seen.get(v["id"]) or today
             unique.append(v)
 
     OUT.write_text(json.dumps(unique, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
