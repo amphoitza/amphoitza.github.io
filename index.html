@@ -187,6 +187,18 @@
   }
   .edit input:focus { outline: none; background: var(--card); box-shadow: 3px 3px 0 var(--yellow); }
 
+  /* ---------- sticker wall (background) ----------
+     One block of random stickers is cloned into a grid; the whole wall drifts diagonally by exactly
+     one block, then loops, so the motion is seamless. */
+  #stickers { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; opacity: .9; }
+  #stickers .wall { position: absolute; will-change: transform; animation: drift var(--dur, 60s) linear infinite; }
+  #stickers .block { position: absolute; width: var(--bw); height: var(--bh); }
+  #stickers img { position: absolute; width: var(--cell); height: var(--cell); object-fit: contain; filter: drop-shadow(0 3px 4px rgba(0,0,0,.22)); }
+  @keyframes drift { to { transform: translate(var(--bw), var(--bh)); } }
+  @media (prefers-reduced-motion: reduce) { #stickers .wall { animation: none; } }
+  /* Loose text sits on top of the stickers, so give it a backing to stay readable. */
+  .hint, .note { width: fit-content; max-width: 100%; padding: 4px 8px; border-radius: 6px; background: color-mix(in srgb, var(--paper) 88%, transparent); }
+
   /* ---------- settings ---------- */
   .section-title { margin: 6px 0 14px; font-size: 22px; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; }
   .section-title + .themes { margin-bottom: 30px; }
@@ -460,7 +472,8 @@
   [data-theme="terminal"] .info a { font: 28px var(--display); letter-spacing: 0; }
   [data-theme="terminal"] :is(.info small, .idx) { font: 17px var(--display); }
   [data-theme="terminal"] .check svg { stroke: var(--ink); }
-  [data-theme="terminal"] .tile.done { transform: none; box-shadow: none; opacity: .5; background: transparent; }
+  [data-theme="terminal"] .tile.done { transform: none; box-shadow: none; background-color: rgba(5, 8, 5, .94); }
+  [data-theme="terminal"] .tile.done > * { opacity: .5; }
   [data-theme="terminal"] .tile.done .check { background: transparent; }
   [data-theme="terminal"] .tile.done .badge { filter: grayscale(1) sepia(1) hue-rotate(70deg) saturate(4) brightness(.9); }
   [data-theme="terminal"] .stamp { display: none; }
@@ -556,6 +569,13 @@
   [data-theme="paper"] .theme { border: 1px solid var(--line); border-radius: 0; box-shadow: none; }
   [data-theme="paper"] .theme:hover { transform: none; box-shadow: none; }
 
+  /* ---------- sticker wall per skin ---------- */
+  [data-theme="terminal"] #stickers { filter: grayscale(1) sepia(1) hue-rotate(70deg) saturate(3) brightness(.75); opacity: .45; }
+  [data-theme="paper"] #stickers { filter: grayscale(1) contrast(1.15); opacity: .35; mix-blend-mode: multiply; }
+  [data-theme="nes"] #stickers img { image-rendering: pixelated; }
+  [data-theme="terminal"] :is(.stamp-date, .stat, .tile, .play, .btn, .check, .clip-card, .theme, .seg, .edit input) { background-color: rgba(5, 8, 5, .94); }
+  [data-theme="paper"] :is(header, .stats, .tile, .row, .clip-card, .clip-head, .section-title, .themes .theme) { background-color: var(--paper); }
+
   /* ---------- previews in the theme picker ---------- */
   .theme .nm { font-family: var(--display); }
   .theme[data-theme="win98"] .pv { background: #008080; border-bottom: 2px solid #808080; }
@@ -599,6 +619,7 @@
 </style>
 </head>
 <body>
+<div id="stickers" aria-hidden="true"></div>
 <main>
   <header>
     <h1>Daily<br><span>Games</span></h1>
@@ -645,6 +666,7 @@
     <h2 class="section-title">Other</h2>
     <div class="row first">
       <button class="btn" id="soundBtn" title="Toggle sounds"></button>
+      <button class="btn" id="stickerBtn" title="Toggle the sticker background"></button>
       <button class="btn" id="editBtn">Edit games</button>
       <span class="spacer"></span>
       <button class="btn" id="closeSettings">Done</button>
@@ -877,6 +899,7 @@ function render() {
   justDone = null;
 
   $("soundBtn").textContent = state.sound ? "♪ On" : "♪ Off";
+  $("stickerBtn").textContent = state.stickers === false ? "Stickers: Off" : "Stickers: On";
 }
 
 function openNext() {
@@ -977,7 +1000,75 @@ function renderThemes() {
   }
 }
 
-$("settingsBtn").onclick = () => { renderThemes(); showScreen("settings"); };
+// ---------- sticker wall ----------
+// Stickers live in stickers/1.webp … stickers/N.webp. To add more, drop in the next numbers and bump this.
+const STICKER_COUNT = 15;
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+let wallWidth = 0;
+function buildStickers() {
+  const layer = $("stickers");
+  layer.innerHTML = "";
+  layer.hidden = state.stickers === false;
+  if (layer.hidden) return;
+  wallWidth = innerWidth;
+
+  const cell = innerWidth < 480 ? 92 : 128;
+  const stepX = Math.round(cell * 1.2), stepY = Math.round(cell * 1.1);
+  const cols = 6, rows = 6; // rows must be even so the brick offset lines up between blocks
+  const bw = cols * stepX, bh = rows * stepY;
+
+  // Shuffle-bag: every sticker shows up before any repeats, so neighbours are rarely the same.
+  let bag = [];
+  const next = () => (bag.length ? bag : (bag = shuffle([...Array(STICKER_COUNT)].map((_, i) => i + 1)))).pop();
+
+  const block = document.createElement("div");
+  block.className = "block";
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const img = document.createElement("img");
+      img.src = `stickers/${next()}.webp`;
+      img.alt = "";
+      img.decoding = "async";
+      const x = c * stepX + (r % 2 ? stepX / 2 : 0) + (Math.random() - 0.5) * cell * 0.2;
+      const y = r * stepY + (Math.random() - 0.5) * cell * 0.2;
+      img.style.left = `${x}px`;
+      img.style.top = `${y}px`;
+      img.style.transform = `rotate(${(Math.random() - 0.5) * 28}deg) scale(${0.85 + Math.random() * 0.3})`;
+      block.appendChild(img);
+    }
+  }
+
+  // Start one block up-left of the screen and drift down-right by one block, then loop.
+  const nx = Math.ceil(innerWidth / bw) + 2, ny = Math.ceil(Math.max(innerHeight, screen.height) / bh) + 2;
+  const wall = document.createElement("div");
+  wall.className = "wall";
+  wall.style.cssText = `--bw:${bw}px; --bh:${bh}px; --cell:${cell}px; --dur:${Math.round(bw / 16)}s; left:${-bw}px; top:${-bh}px`;
+  for (let i = 0; i < nx; i++) {
+    for (let j = 0; j < ny; j++) {
+      const b = block.cloneNode(true);
+      b.style.left = `${i * bw}px`;
+      b.style.top = `${j * bh}px`;
+      wall.appendChild(b);
+    }
+  }
+  layer.appendChild(wall);
+}
+
+let resizeTimer;
+addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  // Only rebuild when the width really changes (phones resize height when the address bar hides).
+  resizeTimer = setTimeout(() => { if (Math.abs(innerWidth - wallWidth) > 40) buildStickers(); }, 250);
+});
+
+$("stickerBtn").onclick = () => { state.stickers = state.stickers === false; save(); render(); buildStickers(); };
+
+$("settingsBtn").onclick =() => { renderThemes(); showScreen("settings"); };
 $("closeSettings").onclick = () => showScreen("play");
 
 $("next").onclick = openNext;
@@ -1058,6 +1149,7 @@ fetch("videos.json", { cache: "no-cache" })
 
 rollDay();
 render();
+buildStickers();
 document.querySelector('meta[name="theme-color"]').content = resolve("var(--paper)");
 </script>
 </body>
