@@ -184,10 +184,55 @@
   .banner small { display: block; font: 600 12px var(--mono); }
 
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
-  @media (max-width: 420px) {
+  /* ---------- clip of the day ---------- */
+  .clip { margin-top: 34px; }
+  .clip-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+  .clip-head h2 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; }
+  .clip-head h2 span { background: var(--pink); color: #111; padding: 0 6px; border: 3px solid var(--line); display: inline-block; transform: rotate(1.5deg); }
+  .clip-card { background: var(--card); border: 3px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
+  .clip-frame { position: relative; background: #000; border-bottom: 3px solid var(--line); aspect-ratio: 16 / 9; }
+  .clip-frame.short { aspect-ratio: 9 / 16; width: min(100%, calc(72vh * 9 / 16)); margin: 0 auto; border-bottom: 0; }
+  .clip-wrap.short { background: #000; border-bottom: 3px solid var(--line); }
+  .clip-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .clip-meta { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+  .clip-meta .t { flex: 1; min-width: 0; font-weight: 700; line-height: 1.25; }
+  .clip-meta small { display: block; font: 500 12px var(--mono); color: var(--ink-soft); margin-top: 2px; }
+  .clip-meta a { color: inherit; }
+  .pill { flex: none; font: 700 11px var(--mono); text-transform: uppercase; letter-spacing: .06em; border: 2px solid var(--line); border-radius: 99px; padding: 2px 8px; background: var(--yellow); color: #111; }
+  .pill.short { background: var(--pink); }
+
+  /* ---------- phones ---------- */
+  @media (hover: none) { .hint { display: none; } .play { margin-bottom: 22px; } }
+  @media (max-width: 480px) {
+    :root { --shadow: 3px 3px 0 var(--line); --shadow-lg: 4px 4px 0 var(--line); }
+    main { padding: calc(20px + env(safe-area-inset-top, 0px)) 14px calc(40px + env(safe-area-inset-bottom, 0px)); }
+    h1 { font-size: 46px; }
+    h1 span { padding: 0 6px; }
+    .stamp-date { padding: 6px 8px; font-size: 10px; }
+    .stamp-date b { font-size: 22px; }
+    .stats { gap: 8px; margin: 22px 0 14px; }
+    .stat { padding: 8px 10px; border-radius: 10px; }
     .stat b { font-size: 22px; }
+    .segs { gap: 4px; margin-bottom: 18px; }
+    .seg { height: 12px; }
+    .play { padding: 14px; gap: 10px; }
     .play strong { font-size: 21px; }
+    .play .go { width: 44px; height: 44px; font-size: 18px; }
+    ol { gap: 10px; }
+    .tile { gap: 10px; padding: 8px 10px 8px 8px; }
+    .tile:hover { transform: none; box-shadow: var(--shadow); }
+    .tile.done, .tile.done:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--line); }
+    .tile.current { outline-offset: 3px; }
+    .badge { width: 46px; height: 46px; border-radius: 9px; }
+    .badge svg { width: 30px; height: 30px; }
+    .info a { font-size: 17px; }
+    .check { width: 42px; height: 42px; }
     .stamp { display: none; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .row .spacer { display: none; }
+    .row .btn { padding: 12px 8px; }
+    .edit .btn.icon { flex: 1; padding: 8px; }
+    .clip-head h2 { font-size: 20px; }
   }
 </style>
 </head>
@@ -218,6 +263,20 @@
       <button class="btn" id="editBtn">Edit</button>
     </div>
     <p class="note" id="popupNote" hidden>Your browser blocked some tabs. Click the pop-up icon in the address bar, choose “Always allow pop-ups” for this site, then try again.</p>
+
+    <section class="clip" id="clip" hidden>
+      <div class="clip-head">
+        <h2>Clip of the <span>day</span></h2>
+        <button class="btn" id="reroll" title="Pick a different clip for today">🎲 Another</button>
+      </div>
+      <div class="clip-card">
+        <div class="clip-wrap" id="clipWrap"><div class="clip-frame" id="clipFrame"></div></div>
+        <div class="clip-meta">
+          <div class="t"><span id="clipTitle"></span><small><a id="clipChannel" target="_blank" rel="noopener"></a></small></div>
+          <span class="pill" id="clipType"></span>
+        </div>
+      </div>
+    </section>
   </div>
 
   <div id="edit" hidden>
@@ -517,7 +576,51 @@ document.addEventListener("keydown", (e) => {
   }
 });
 // Re-check the date when you come back to the tab (e.g. left open overnight).
-document.addEventListener("visibilitychange", () => { if (!document.hidden) { rollDay(); render(); } });
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) return;
+  rollDay();
+  render();
+  if (videos.length && (!state.clip || state.clip.day !== today())) showClip(pickClip());
+});
+
+// ---------- clip of the day ----------
+// videos.json is refreshed daily by a GitHub Action, so new uploads join the pool automatically.
+const CHANNEL_NAMES = { baiatucucaiacu: "BaiatuCuCaiacu", ggugateste: "GGuGateste" };
+let videos = [];
+
+function pickClip(reroll = false) {
+  if (!videos.length) return null;
+  const saved = state.clip && state.clip.day === today() && videos.find((v) => v.id === state.clip.id);
+  if (saved && !reroll) return saved;
+  let v;
+  do { v = videos[Math.floor(Math.random() * videos.length)]; }
+  while (videos.length > 1 && saved && v.id === saved.id);
+  state.clip = { day: today(), id: v.id };
+  save();
+  return v;
+}
+
+function showClip(v) {
+  if (!v) return;
+  const short = v.type === "short";
+  $("clipWrap").classList.toggle("short", short);
+  $("clipFrame").className = "clip-frame" + (short ? " short" : "");
+  $("clipFrame").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${v.id}?rel=0&playsinline=1" title="YouTube video" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+  $("clipTitle").textContent = v.title;
+  $("clipChannel").textContent = CHANNEL_NAMES[v.channel] || v.channel;
+  $("clipChannel").href = `https://www.youtube.com/@${v.channel}`;
+  $("clipType").textContent = short ? "Short" : "Video";
+  $("clipType").className = "pill" + (short ? " short" : "");
+  $("clip").hidden = false;
+}
+
+$("reroll").onclick = () => showClip(pickClip(true));
+
+fetch("videos.json", { cache: "no-cache" })
+  .then((r) => r.json())
+  .then((list) => { videos = list; showClip(pickClip()); })
+  .catch(() => {});
 
 rollDay();
 render();
