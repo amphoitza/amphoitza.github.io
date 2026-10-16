@@ -5,12 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#fff4e0">
 <title>Daily Games</title>
+<script>
+  // Apply the saved theme before the page paints, so there's no flash of the default one.
+  try { const t = localStorage.getItem("amphoitza.theme"); if (t && t !== "amphoitza") document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='6' y='6' width='88' height='88' rx='14' fill='%23ffd23f' stroke='%23111' stroke-width='8'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23111' font-family='Arial Black,Arial' font-weight='900'>D</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
+  :root, [data-theme="amphoitza"] {
     --paper: #fff4e0;
     --card: #ffffff;
     --ink: #111111;
@@ -19,13 +23,21 @@
     --dim: #efe6d4;
     --yellow: #ffd23f;
     --pink: #ff5d8f;
+    --success: #2fbf71;
+    --danger: #e23d3d;
+    --on-c: #111111; /* text/ink drawn on top of accent and game colours */
+    --g-wordleRo: #ffd23f;
+    --g-wordle: #6aaa64;
+    --g-connections: #ba81c5;
+    --g-size: #ff7a45;
+    --g-geo: #5b6cff;
     --shadow: 4px 4px 0 var(--line);
     --shadow-lg: 6px 6px 0 var(--line);
     --display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
     --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root, [data-theme="amphoitza"] {
       --paper: #17140f;
       --card: #221e17;
       --ink: #fff4e0;
@@ -34,6 +46,58 @@
       --dim: #2c271f;
     }
   }
+
+  /* ---------- themes ----------
+     Palettes from popular community colour schemes, credited in THEMES below.
+     Selector is [data-theme] (not :root) so the picker previews can use them too. */
+  [data-theme="dracula"] {
+    --paper: #282a36; --card: #343746; --dim: #21222c; --ink: #f8f8f2; --ink-soft: #a3acd9; --line: #bd93f9;
+    --yellow: #f1fa8c; --pink: #ff79c6; --success: #50fa7b; --danger: #ff5555; --on-c: #282a36;
+    --g-wordleRo: #f1fa8c; --g-wordle: #50fa7b; --g-connections: #bd93f9; --g-size: #ffb86c; --g-geo: #8be9fd;
+  }
+  [data-theme="nord"] {
+    --paper: #2e3440; --card: #3b4252; --dim: #434c5e; --ink: #eceff4; --ink-soft: #a6b0c3; --line: #88c0d0;
+    --yellow: #ebcb8b; --pink: #b48ead; --success: #a3be8c; --danger: #bf616a; --on-c: #2e3440;
+    --g-wordleRo: #ebcb8b; --g-wordle: #a3be8c; --g-connections: #b48ead; --g-size: #d08770; --g-geo: #81a1c1;
+  }
+  [data-theme="mocha"] {
+    --paper: #1e1e2e; --card: #313244; --dim: #181825; --ink: #cdd6f4; --ink-soft: #a6adc8; --line: #b4befe;
+    --yellow: #f9e2af; --pink: #f5c2e7; --success: #a6e3a1; --danger: #f38ba8; --on-c: #1e1e2e;
+    --g-wordleRo: #f9e2af; --g-wordle: #a6e3a1; --g-connections: #cba6f7; --g-size: #fab387; --g-geo: #89b4fa;
+  }
+  [data-theme="latte"] {
+    --paper: #eff1f5; --card: #ffffff; --dim: #e6e9ef; --ink: #4c4f69; --ink-soft: #6c6f85; --line: #4c4f69;
+    --yellow: #df8e1d; --pink: #ea76cb; --success: #40a02b; --danger: #d20f39; --on-c: #ffffff;
+    --g-wordleRo: #df8e1d; --g-wordle: #40a02b; --g-connections: #8839ef; --g-size: #fe640b; --g-geo: #1e66f5;
+  }
+  [data-theme="gruvbox"] {
+    --paper: #282828; --card: #3c3836; --dim: #1d2021; --ink: #ebdbb2; --ink-soft: #a89984; --line: #d5c4a1;
+    --yellow: #fabd2f; --pink: #d3869b; --success: #b8bb26; --danger: #fb4934; --on-c: #282828;
+    --g-wordleRo: #fabd2f; --g-wordle: #b8bb26; --g-connections: #d3869b; --g-size: #fe8019; --g-geo: #83a598;
+  }
+  [data-theme="solarized"] {
+    --paper: #fdf6e3; --card: #fffcf2; --dim: #eee8d5; --ink: #073642; --ink-soft: #657b83; --line: #073642;
+    --yellow: #b58900; --pink: #d33682; --success: #859900; --danger: #dc322f; --on-c: #fdf6e3;
+    --g-wordleRo: #b58900; --g-wordle: #859900; --g-connections: #6c71c4; --g-size: #cb4b16; --g-geo: #268bd2;
+  }
+  [data-theme="tokyo"] {
+    --paper: #1a1b26; --card: #24283b; --dim: #16161e; --ink: #c0caf5; --ink-soft: #a9b1d6; --line: #7aa2f7;
+    --yellow: #e0af68; --pink: #bb9af7; --success: #9ece6a; --danger: #f7768e; --on-c: #1a1b26;
+    --g-wordleRo: #e0af68; --g-wordle: #9ece6a; --g-connections: #bb9af7; --g-size: #ff9e64; --g-geo: #7dcfff;
+  }
+  [data-theme="rosepine"] {
+    --paper: #191724; --card: #1f1d2e; --dim: #26233a; --ink: #e0def4; --ink-soft: #908caa; --line: #c4a7e7;
+    --yellow: #f6c177; --pink: #eb6f92; --success: #9ccfd8; --danger: #eb6f92; --on-c: #191724;
+    --g-wordleRo: #f6c177; --g-wordle: #9ccfd8; --g-connections: #c4a7e7; --g-size: #eb6f92; --g-geo: #ebbcba;
+  }
+  [data-theme="synthwave"] {
+    --paper: #262335; --card: #34294f; --dim: #241b2f; --ink: #ffffff; --ink-soft: #a7acdb; --line: #ff7edb;
+    --yellow: #fede5d; --pink: #ff7edb; --success: #72f1b8; --danger: #fe4450; --on-c: #262335;
+    --g-wordleRo: #fede5d; --g-wordle: #72f1b8; --g-connections: #ff7edb; --g-size: #ff8b39; --g-geo: #36f9f6;
+  }
+  [data-theme="synthwave"] h1 { text-shadow: 0 0 14px rgba(255, 126, 219, .6); }
+  [data-theme="synthwave"] .play, [data-theme="synthwave"] .tile { filter: drop-shadow(0 0 8px rgba(255, 126, 219, .25)); }
+  [data-theme]:not([data-theme="amphoitza"]):not([data-theme="latte"]):not([data-theme="solarized"]) { color-scheme: dark; }
 
   * { box-sizing: border-box; }
   html { -webkit-tap-highlight-color: transparent; }
@@ -54,7 +118,7 @@
     margin: 0; font-weight: 800; font-size: clamp(44px, 12vw, 68px);
     line-height: .86; letter-spacing: -0.045em; text-transform: uppercase;
   }
-  h1 span { display: inline-block; background: var(--yellow); color: #111; padding: 0 8px; border: 3px solid var(--line); box-shadow: var(--shadow); transform: rotate(-2deg); margin-top: 6px; }
+  h1 span { display: inline-block; background: var(--yellow); color: var(--on-c); padding: 0 8px; border: 3px solid var(--line); box-shadow: var(--shadow); transform: rotate(-2deg); margin-top: 6px; }
   .stamp-date {
     font: 700 12px/1.2 var(--mono); text-transform: uppercase; letter-spacing: .06em;
     border: 3px solid var(--line); background: var(--card); padding: 8px 10px; text-align: center;
@@ -86,7 +150,7 @@
   .play {
     position: relative; display: flex; align-items: center; gap: 14px; width: 100%;
     padding: 16px 18px; border: 3px solid var(--line); border-radius: 16px;
-    background: var(--c, var(--yellow)); color: #111; cursor: pointer; text-align: left;
+    background: var(--c, var(--yellow)); color: var(--on-c); cursor: pointer; text-align: left;
     box-shadow: var(--shadow-lg); transition: transform .08s, box-shadow .08s;
     font-family: var(--display);
   }
@@ -96,14 +160,14 @@
   .play small { display: block; font: 700 12px var(--mono); text-transform: uppercase; letter-spacing: .1em; opacity: .75; }
   .play strong { display: block; font-size: 26px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .play .go {
-    flex: none; width: 52px; height: 52px; border-radius: 50%; border: 3px solid #111; background: #111; color: var(--c, var(--yellow));
+    flex: none; width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--on-c); background: var(--on-c); color: var(--c, var(--yellow));
     display: grid; place-items: center; font-size: 22px;
   }
   .play:hover .go { animation: nudge .6s ease-in-out infinite alternate; }
   @keyframes nudge { to { transform: translateX(4px); } }
   .play.finished { background: var(--card); color: var(--ink); cursor: default; }
   .play.finished:hover, .play.finished:active { transform: none; box-shadow: var(--shadow-lg); }
-  .play.finished .go { background: #2fbf71; color: #fff; border-color: var(--line); }
+  .play.finished .go { background: var(--success); color: var(--on-c); border-color: var(--line); }
   .hint { font: 500 12px var(--mono); color: var(--ink-soft); margin: 12px 2px 26px; }
   kbd { font: 700 11px var(--mono); border: 2px solid var(--ink); border-radius: 5px; padding: 0 5px; background: var(--card); }
 
@@ -121,7 +185,7 @@
     background: var(--c); display: grid; place-items: center; overflow: hidden;
   }
   .badge svg { width: 36px; height: 36px; }
-  .badge .letter { font-weight: 800; font-size: 28px; color: #111; }
+  .badge .letter { font-weight: 800; font-size: 28px; color: var(--on-c); }
   .info { flex: 1; min-width: 0; }
   .info a { color: inherit; text-decoration: none; font-weight: 800; font-size: 19px; letter-spacing: -0.02em; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .info a::after { content: ""; position: absolute; inset: 0; } /* whole tile clickable */
@@ -134,7 +198,7 @@
     box-shadow: 2px 2px 0 var(--line); transition: transform .08s, box-shadow .08s;
   }
   .check:active { transform: translate(2px, 2px); box-shadow: none; }
-  .check svg { width: 20px; height: 20px; stroke: #111; stroke-width: 4; fill: none; stroke-dasharray: 30; stroke-dashoffset: 30; transition: stroke-dashoffset .3s ease-out; }
+  .check svg { width: 20px; height: 20px; stroke: var(--on-c); stroke-width: 4; fill: none; stroke-dasharray: 30; stroke-dashoffset: 30; transition: stroke-dashoffset .3s ease-out; }
   .tile.done .check { background: var(--c); }
   .tile.done .check svg { stroke-dashoffset: 0; }
 
@@ -144,7 +208,7 @@
   .stamp {
     position: absolute; right: 64px; top: 50%; z-index: 1; pointer-events: none;
     font: 800 15px var(--display); letter-spacing: .08em; text-transform: uppercase;
-    color: #e23d3d; border: 3px solid #e23d3d; border-radius: 6px; padding: 1px 7px;
+    color: var(--danger); border: 3px solid var(--danger); border-radius: 6px; padding: 1px 7px;
     transform: translateY(-50%) rotate(-12deg); opacity: 0;
   }
   .tile.done .stamp { opacity: .85; }
@@ -159,9 +223,9 @@
     background: var(--card); color: var(--ink); cursor: pointer; box-shadow: 3px 3px 0 var(--line);
     transition: transform .08s, box-shadow .08s;
   }
-  .btn:hover { background: var(--yellow); color: #111; }
+  .btn:hover { background: var(--yellow); color: var(--on-c); }
   .btn:active { transform: translate(3px, 3px); box-shadow: none; }
-  .btn.danger:hover { background: var(--pink); }
+  .btn.danger:hover { background: var(--pink); color: var(--on-c); }
   .btn.icon { padding: 6px 10px; font-size: 14px; }
   .spacer { flex: 1; }
   .note { font: 500 12px var(--mono); color: var(--ink-soft); margin-top: 16px; }
@@ -175,10 +239,35 @@
   }
   .edit input:focus { outline: none; background: var(--card); box-shadow: 3px 3px 0 var(--yellow); }
 
+  /* ---------- settings ---------- */
+  .section-title { margin: 6px 0 14px; font-size: 22px; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; }
+  .section-title + .themes { margin-bottom: 30px; }
+  .row.first { margin-top: 0; }
+  .themes { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+  .theme {
+    display: block; width: 100%; padding: 0; text-align: left; cursor: pointer; font: inherit;
+    background: var(--card); color: var(--ink); border: 3px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow); overflow: hidden; transition: transform .08s, box-shadow .08s;
+  }
+  .theme:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--line); }
+  .theme:active { transform: translate(3px, 3px); box-shadow: none; }
+  .theme .pv { display: block;
+    position: relative; height: 74px; background: var(--paper); border-bottom: 3px solid var(--line); padding: 10px;
+    background-image: radial-gradient(color-mix(in srgb, var(--ink) 12%, transparent) 1px, transparent 1px); background-size: 10px 10px;
+  }
+  .theme .pv-card { display: block; height: 22px; width: 70%; background: var(--card); border: 2px solid var(--line); border-radius: 5px; box-shadow: 2px 2px 0 var(--line); }
+  .theme .pv-btn { display: block; margin-top: 8px; height: 18px; width: 48%; background: var(--yellow); border: 2px solid var(--line); border-radius: 5px; box-shadow: 2px 2px 0 var(--line); }
+  .theme .dots { position: absolute; right: 8px; bottom: 8px; display: flex; gap: 3px; }
+  .theme .dots i { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--line); }
+  .theme .nm { display: block; padding: 8px 10px 0; font-weight: 800; font-size: 15px; letter-spacing: -0.02em; }
+  .theme .by { display: block; padding: 0 10px 9px; font: 500 11px var(--mono); color: var(--ink-soft); }
+  .theme.selected { outline: 3px dashed var(--line); outline-offset: 4px; }
+  .theme.selected .nm::after { content: " ✓"; }
+
   /* ---------- all done banner ---------- */
   .banner {
     text-align: center; margin: 0 0 18px; padding: 14px; border: 3px solid var(--line); border-radius: 14px;
-    background: #2fbf71; color: #111; box-shadow: var(--shadow); font-weight: 800; font-size: 20px; letter-spacing: -0.02em;
+    background: var(--success); color: var(--on-c); box-shadow: var(--shadow); font-weight: 800; font-size: 20px; letter-spacing: -0.02em;
     animation: bump .5s cubic-bezier(.3,1.8,.5,1);
   }
   .banner small { display: block; font: 600 12px var(--mono); }
@@ -188,7 +277,7 @@
   .clip { margin-top: 34px; }
   .clip-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
   .clip-head h2 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.03em; text-transform: uppercase; }
-  .clip-head h2 span { background: var(--pink); color: #111; padding: 0 6px; border: 3px solid var(--line); display: inline-block; transform: rotate(1.5deg); }
+  .clip-head h2 span { background: var(--pink); color: var(--on-c); padding: 0 6px; border: 3px solid var(--line); display: inline-block; transform: rotate(1.5deg); }
   .clip-card { background: var(--card); border: 3px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
   .clip-frame { position: relative; background: #000; border-bottom: 3px solid var(--line); aspect-ratio: 16 / 9; }
   .clip-frame.short { aspect-ratio: 9 / 16; width: min(100%, calc(72vh * 9 / 16)); margin: 0 auto; border-bottom: 0; }
@@ -198,7 +287,7 @@
   .clip-meta .t { flex: 1; min-width: 0; font-weight: 700; line-height: 1.25; }
   .clip-meta small { display: block; font: 500 12px var(--mono); color: var(--ink-soft); margin-top: 2px; }
   .clip-meta a { color: inherit; }
-  .pill { flex: none; font: 700 11px var(--mono); text-transform: uppercase; letter-spacing: .06em; border: 2px solid var(--line); border-radius: 99px; padding: 2px 8px; background: var(--yellow); color: #111; }
+  .pill { flex: none; font: 700 11px var(--mono); text-transform: uppercase; letter-spacing: .06em; border: 2px solid var(--line); border-radius: 99px; padding: 2px 8px; background: var(--yellow); color: var(--on-c); }
   .pill.short { background: var(--pink); }
 
   /* ---------- phones ---------- */
@@ -228,7 +317,11 @@
     .info a { font-size: 17px; }
     .check { width: 42px; height: 42px; }
     .stamp { display: none; }
-    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .row .btn { font-size: 12px; }
+    .themes { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .theme .pv { height: 62px; }
+    .section-title { font-size: 20px; }
     .row .spacer { display: none; }
     .row .btn { padding: 12px 8px; }
     .edit .btn.icon { flex: 1; padding: 8px; }
@@ -259,8 +352,7 @@
       <button class="btn" id="openAll" title="Your browser may ask you to allow pop-ups the first time">Open all</button>
       <button class="btn" id="resetToday">Reset today</button>
       <span class="spacer"></span>
-      <button class="btn" id="soundBtn" title="Toggle sounds"></button>
-      <button class="btn" id="editBtn">Edit</button>
+      <button class="btn" id="settingsBtn">⚙ Settings</button>
     </div>
     <p class="note" id="popupNote" hidden>Your browser blocked some tabs. Click the pop-up icon in the address bar, choose “Always allow pop-ups” for this site, then try again.</p>
 
@@ -276,6 +368,19 @@
         </div>
       </div>
     </section>
+  </div>
+
+  <div id="settings" hidden>
+    <h2 class="section-title">Theme</h2>
+    <div class="themes" id="themes"></div>
+    <h2 class="section-title">Other</h2>
+    <div class="row first">
+      <button class="btn" id="soundBtn" title="Toggle sounds"></button>
+      <button class="btn" id="editBtn">Edit games</button>
+      <span class="spacer"></span>
+      <button class="btn" id="closeSettings">Done</button>
+    </div>
+    <p class="note">Theme and settings are saved on this device.</p>
   </div>
 
   <div id="edit" hidden>
@@ -314,11 +419,11 @@ const ICONS = {
   geo: `<svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="#38c6f4" stroke="#111" stroke-width="2.5"/><path d="M8 12c4 2 6-1 9 1s1 6 5 6 4 4 2 8M24 6c-1 3 2 4 5 4" stroke="#111" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="18" cy="15" r="4" fill="#ffd23f" stroke="#111" stroke-width="2.5"/></svg>`,
 };
 const KNOWN = [
-  { test: /wordle-ro|wordle\.ro|cuvintez/, color: "#ffd23f", icon: "wordleRo" },
-  { test: /wordle/, color: "#6aaa64", icon: "wordle" },
-  { test: /connections/, color: "#ba81c5", icon: "connections" },
-  { test: /size-it-up|magnitudle|sizeitup/, color: "#ff7a45", icon: "size" },
-  { test: /geoguessr/, color: "#5b6cff", icon: "geo" },
+  { test: /wordle-ro|wordle\.ro|cuvintez/, color: "var(--g-wordleRo)", icon: "wordleRo" },
+  { test: /wordle/, color: "var(--g-wordle)", icon: "wordle" },
+  { test: /connections/, color: "var(--g-connections)", icon: "connections" },
+  { test: /size-it-up|magnitudle|sizeitup/, color: "var(--g-size)", icon: "size" },
+  { test: /geoguessr/, color: "var(--g-geo)", icon: "geo" },
 ];
 const PALETTE = ["#ff5d8f", "#2fbf71", "#38c6f4", "#ffd23f", "#ff7a45", "#a78bfa"];
 function meta(g, i) {
@@ -379,19 +484,24 @@ function blip(freqs, dur = 0.09, type = "square", gain = 0.05) {
     });
   } catch (e) {}
 }
+// Turn "var(--x)" into the theme's actual hex value (confetti needs real colours).
+function resolve(color) {
+  const m = /^var\((--[\w-]+)\)$/.exec(color);
+  return m ? getComputedStyle(document.documentElement).getPropertyValue(m[1]).trim() : color;
+}
 function burst(el, color) {
   if (typeof confetti !== "function") return;
   const r = el.getBoundingClientRect();
   confetti({
     particleCount: 40, spread: 70, startVelocity: 28, scalar: 0.9, ticks: 120,
     origin: { x: (r.left + r.width - 30) / innerWidth, y: (r.top + r.height / 2) / innerHeight },
-    colors: [color, "#111111", "#ffffff"], disableForReducedMotion: true,
+    colors: [resolve(color), resolve("var(--line)"), resolve("var(--card)")], disableForReducedMotion: true,
   });
 }
 function bigCelebration() {
   if (typeof confetti !== "function") return;
   const end = Date.now() + 900;
-  const colors = ["#ffd23f", "#ff5d8f", "#2fbf71", "#38c6f4", "#ba81c5"];
+  const colors = ["--yellow", "--pink", "--success", "--g-geo", "--g-connections"].map((v) => resolve(`var(${v})`));
   (function frame() {
     confetti({ particleCount: 6, angle: 60, spread: 60, origin: { x: 0, y: 0.75 }, colors, disableForReducedMotion: true });
     confetti({ particleCount: 6, angle: 120, spread: 60, origin: { x: 1, y: 0.75 }, colors, disableForReducedMotion: true });
@@ -545,11 +655,63 @@ function renderEdit() {
     list.appendChild(li);
   });
 }
+// One screen at a time: "play", "settings" or "edit".
+function showScreen(name) {
+  for (const id of ["play", "settings", "edit"]) $(id).hidden = id !== name;
+  scrollTo(0, 0);
+}
 function showEdit(on) {
-  $("play").hidden = on;
-  $("edit").hidden = !on;
+  showScreen(on ? "edit" : "play");
   if (on) { draft = structuredClone(state.games); renderEdit(); }
 }
+
+// ---------- themes ----------
+// Each palette comes from a well-known open-source colour scheme; the CSS lives in the [data-theme] blocks.
+const THEMES = [
+  { id: "amphoitza", name: "Amphoitza", by: "Original · follows light/dark" },
+  { id: "dracula", name: "Dracula", by: "by Zeno Rocha" },
+  { id: "nord", name: "Nord", by: "by Arctic Ice Studio" },
+  { id: "mocha", name: "Catppuccin Mocha", by: "by Catppuccin" },
+  { id: "latte", name: "Catppuccin Latte", by: "by Catppuccin" },
+  { id: "gruvbox", name: "Gruvbox", by: "by Pavel Pertsev" },
+  { id: "solarized", name: "Solarized Light", by: "by Ethan Schoonover" },
+  { id: "tokyo", name: "Tokyo Night", by: "by enkia" },
+  { id: "rosepine", name: "Rosé Pine", by: "by Rosé Pine" },
+  { id: "synthwave", name: "Synthwave '84", by: "by Robb Owen" },
+];
+const THEME_KEY = "amphoitza.theme";
+
+function currentTheme() {
+  try { return localStorage.getItem(THEME_KEY) || "amphoitza"; } catch (e) { return "amphoitza"; }
+}
+function applyTheme(id) {
+  if (id === "amphoitza") document.documentElement.removeAttribute("data-theme");
+  else document.documentElement.dataset.theme = id;
+  try { localStorage.setItem(THEME_KEY, id); } catch (e) {}
+  document.querySelector('meta[name="theme-color"]').content = resolve("var(--paper)");
+  render();
+  renderThemes();
+}
+function renderThemes() {
+  const box = $("themes");
+  const cur = currentTheme();
+  box.innerHTML = "";
+  for (const t of THEMES) {
+    const b = document.createElement("button");
+    b.className = "theme" + (t.id === cur ? " selected" : "");
+    b.dataset.theme = t.id;
+    b.innerHTML = `<span class="pv"><span class="pv-card"></span><span class="pv-btn"></span>
+      <span class="dots">${["wordleRo", "wordle", "connections", "size", "geo"].map((g) => `<i style="background:var(--g-${g})"></i>`).join("")}</span></span>
+      <span class="nm"></span><span class="by"></span>`;
+    b.querySelector(".nm").textContent = t.name;
+    b.querySelector(".by").textContent = t.by;
+    b.onclick = () => applyTheme(t.id);
+    box.appendChild(b);
+  }
+}
+
+$("settingsBtn").onclick = () => { renderThemes(); showScreen("settings"); };
+$("closeSettings").onclick = () => showScreen("play");
 
 $("next").onclick = openNext;
 $("openAll").onclick = openAll;
@@ -629,6 +791,7 @@ fetch("videos.json", { cache: "no-cache" })
 
 rollDay();
 render();
+document.querySelector('meta[name="theme-color"]').content = resolve("var(--paper)");
 </script>
 </body>
 </html>
