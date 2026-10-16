@@ -136,9 +136,13 @@ const DEFAULT_GAMES = [
   { name: "Wordle România", url: "https://wordle.ro/" },
   { name: "Wordle", url: "https://www.nytimes.com/games/wordle/index.html" },
   { name: "Connections", url: "https://www.nytimes.com/games/connections" },
-  { name: "Size It Up", url: "https://sizeitup.games/" },
+  { name: "Size It Up", url: "https://magnitudle.com/size-it-up" },
   { name: "GeoGuessr Daily Challenge", url: "https://www.geoguessr.com/daily-challenges" },
 ];
+
+const OLD_URLS = {
+  "https://sizeitup.games/": "https://magnitudle.com/size-it-up",
+};
 
 const KEY = "dailyGames.v1";
 const $ = (id) => document.getElementById(id);
@@ -146,7 +150,11 @@ const $ = (id) => document.getElementById(id);
 function load() {
   try {
     const s = JSON.parse(localStorage.getItem(KEY));
-    if (s && Array.isArray(s.games)) return s;
+    if (s && Array.isArray(s.games)) {
+      // Swap out old default links that turned out to be wrong.
+      for (const g of s.games) if (OLD_URLS[g.url]) g.url = OLD_URLS[g.url];
+      return s;
+    }
   } catch (e) {}
   return { games: structuredClone(DEFAULT_GAMES), day: today(), done: [], streak: 0, best: 0, lastComplete: null };
 }
