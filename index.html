@@ -7,12 +7,12 @@
 <title>Daily Games</title>
 <script>
   // Apply the saved theme before the page paints, so there's no flash of the default one.
-  try { const t = localStorage.getItem("amphoitza.theme"); if (["win98", "xp"].includes(t)) document.documentElement.dataset.theme = t; } catch (e) {}
+  try { const t = localStorage.getItem("amphoitza.theme"); if (["win98", "xp", "royale"].includes(t)) document.documentElement.dataset.theme = t; } catch (e) {}
 </script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='6' y='6' width='88' height='88' rx='14' fill='%23ffd23f' stroke='%23111' stroke-width='8'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23111' font-family='Arial Black,Arial' font-weight='900'>D</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&family=Lilita+One&display=swap" rel="stylesheet">
 <style>
   :root, [data-theme="amphoitza"] {
     --paper: #fff4e0;
@@ -492,6 +492,138 @@
   [data-theme="xp"] .edit input:focus { box-shadow: none; outline: 1px solid #316ac5; }
   [data-theme="xp"] .edit .tile { border: 0; border-radius: 8px 8px 0 0; background: #ece9d8; box-shadow: var(--xp-frame); }
 
+  /* ---------- Royale (inspired by Clash Royale; all art drawn here, no game assets) ----------
+     Layout: games become a deck of cards with rarity frames and elixir numbers, the play button
+     is the big yellow Battle button, progress is the elixir bar, stats are resource bars. */
+  [data-theme="royale"] {
+    --paper: #1d5fc4; --card: #0f2350; --dim: #0b1b40; --ink: #ffffff; --ink-soft: #a9c8ff; --line: #071433;
+    --yellow: #ffd23f; --pink: #d55cf5; --success: #3ecb3e; --danger: #ff4a4a; --on-c: #ffffff;
+    --g-wordleRo: #f7c843; --g-wordle: #4cbf56; --g-connections: #a35ce0; --g-size: #ff8a3d; --g-geo: #3a8df0;
+    --display: "Lilita One", "Arial Black", Impact, sans-serif; --mono: var(--display);
+    --stroke: 0 2px 0 #000, 2px 0 0 #000, -2px 0 0 #000, 0 -2px 0 #000, 2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000, 0 4px 0 rgba(0,0,0,.45);
+    --stroke-sm: 0 1px 0 #000, 1px 0 0 #000, -1px 0 0 #000, 0 -1px 0 #000, 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000, 0 2px 0 rgba(0,0,0,.45);
+    --shadow: none; --shadow-lg: none;
+    color-scheme: dark;
+  }
+  [data-theme="royale"] body {
+    font: 400 14px/1.35 var(--display); letter-spacing: .01em;
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 16px, transparent 16px 32px),
+      radial-gradient(ellipse at 50% 0%, #4aa3ff 0%, #1d5fc4 45%, #10357a 100%);
+    background-attachment: fixed;
+  }
+  [data-theme="royale"] h1 { font: 400 56px/.95 var(--display); text-transform: uppercase; letter-spacing: .01em; color: #fff; text-shadow: var(--stroke); }
+  [data-theme="royale"] h1 span { background: none; border: 0; box-shadow: none; padding: 0; margin-top: 4px; color: #ffd23f; text-shadow: var(--stroke); }
+  /* The date is a wooden chest with a gold band. */
+  [data-theme="royale"] .stamp-date {
+    transform: rotate(3deg); padding: 8px 12px; border: 3px solid #3d1f06; border-radius: 12px; color: #fff; text-shadow: var(--stroke-sm);
+    background: linear-gradient(180deg, #c27a35 0%, #9a5a22 48%, #ffcf3f 48% 56%, #8a4c18 56%, #6d3a10 100%);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 5px 0 #3d1f06; font: 400 13px var(--display); letter-spacing: .04em;
+  }
+  [data-theme="royale"] .stamp-date b { font: 400 30px var(--display); text-shadow: var(--stroke); }
+  /* Stats are the resource bars along the top of the menu. */
+  [data-theme="royale"] .stats { gap: 10px; }
+  [data-theme="royale"] .stat {
+    position: relative; padding: 6px 10px 6px 46px; border: 3px solid var(--line); border-radius: 14px; background: var(--card);
+    box-shadow: inset 0 3px 0 rgba(0,0,0,.35), 0 3px 0 var(--line);
+    background-repeat: no-repeat; background-position: 8px 50%; background-size: 30px 30px;
+  }
+  [data-theme="royale"] .stat:nth-child(1) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M3 24 5 9l6 7 5-10 5 10 6-7 2 15z' fill='%23ffd23f' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3Crect x='4' y='24' width='24' height='4' rx='1' fill='%23e3a100' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E"); }
+  [data-theme="royale"] .stat:nth-child(2) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M9 7H4v2a5 5 0 0 0 5 5m14-7h5v2a5 5 0 0 1-5 5' fill='none' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M9 4h14v7a7 7 0 0 1-14 0z' fill='%23ffd23f' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M14 18h4v5h-4zm-4 5h12v5H10z' fill='%23e3a100' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E"); }
+  [data-theme="royale"] .stat:nth-child(3) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M8 4h16l6 9-14 16L2 13z' fill='%2340e070' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M2 13h28M12 4l-4 9 8 16 8-16-4-9' fill='none' stroke='%23178a3a' stroke-width='1.5'/%3E%3C/svg%3E"); }
+  [data-theme="royale"] .stat small { font: 400 11px var(--display); letter-spacing: .06em; color: #ffd23f; text-shadow: var(--stroke-sm); }
+  [data-theme="royale"] .stat b { font: 400 24px var(--display); letter-spacing: .01em; text-shadow: var(--stroke-sm); }
+  [data-theme="royale"] .stat.fire b::after { display: none; }
+  /* Progress is the elixir bar. */
+  [data-theme="royale"] .segs { gap: 3px; padding: 4px; border: 3px solid var(--line); border-radius: 12px; background: #2b1640; box-shadow: inset 0 3px 0 rgba(0,0,0,.4); }
+  [data-theme="royale"] .seg { height: 16px; border: 0; border-radius: 5px; background: rgba(255,255,255,.08); }
+  [data-theme="royale"] .seg i { background: linear-gradient(180deg, #ff9cf8 0%, #e14bf5 35%, #b81ad6 100%) !important; box-shadow: inset 0 2px 0 rgba(255,255,255,.45); }
+  /* The Battle button. */
+  [data-theme="royale"] .play {
+    border: 3px solid #5a3400; border-radius: 16px; color: #fff; padding: 14px 18px; text-shadow: var(--stroke);
+    background: linear-gradient(180deg, #ffe066 0%, #ffcc1f 45%, #ffb300 55%, #ff9f00 100%);
+    box-shadow: inset 0 -7px 0 #d97f00, inset 0 3px 0 rgba(255,255,255,.6), 0 6px 0 #5a3400;
+  }
+  [data-theme="royale"] .play:hover { transform: none; filter: brightness(1.06); box-shadow: inset 0 -7px 0 #d97f00, inset 0 3px 0 rgba(255,255,255,.6), 0 6px 0 #5a3400; }
+  [data-theme="royale"] .play:active { transform: translateY(5px); box-shadow: inset 0 -3px 0 #d97f00, 0 1px 0 #5a3400; }
+  [data-theme="royale"] .play small { font: 400 13px var(--display); letter-spacing: .06em; opacity: 1; text-shadow: var(--stroke-sm); }
+  [data-theme="royale"] .play strong { font: 400 32px var(--display); text-transform: uppercase; letter-spacing: .02em; }
+  [data-theme="royale"] .play .go { width: 52px; height: 52px; border: 3px solid #0b2f66; background: linear-gradient(180deg, #64b5ff, #1f6fd1); color: #fff; box-shadow: inset 0 -4px 0 #17539c, 0 3px 0 #0b2f66; text-shadow: var(--stroke-sm); animation: none; }
+  [data-theme="royale"] .play.finished { background: linear-gradient(180deg, #5bd36a, #2fa83c); border-color: #0d4a16; box-shadow: inset 0 -7px 0 #1f7a2a, inset 0 3px 0 rgba(255,255,255,.5), 0 6px 0 #0d4a16; }
+  [data-theme="royale"] .play.finished .go { background: linear-gradient(180deg, #ffe066, #ff9f00); border-color: #5a3400; box-shadow: inset 0 -4px 0 #d97f00, 0 3px 0 #5a3400; }
+  [data-theme="royale"] :is(.hint, .note) { font: 400 12px var(--display); letter-spacing: .03em; color: #fff; background: rgba(7,20,51,.85); border-radius: 10px; margin-top: 18px; }
+  [data-theme="royale"] kbd { font: 400 11px var(--display); color: #000; border: 2px solid #000; border-radius: 5px; background: #ffd23f; }
+  /* The game list is a deck of cards. */
+  [data-theme="royale"] #list { counter-reset: card; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 14px; }
+  [data-theme="royale"] #list .tile {
+    counter-increment: card; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; aspect-ratio: 3 / 4;
+    padding: 10px 6px 8px; border: 4px solid #a8c8ef; border-radius: 12px; color: #fff; transform: none; transition: transform .15s;
+    background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.45), transparent 55%), linear-gradient(180deg, var(--c), color-mix(in srgb, var(--c) 55%, #000));
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,.35), 0 5px 0 var(--line);
+  }
+  [data-theme="royale"] #list .tile:nth-child(5n+2) { border-color: #ff9d2a; }
+  [data-theme="royale"] #list .tile:nth-child(5n+3) { border-color: #c25cf0; }
+  [data-theme="royale"] #list .tile:nth-child(5n+4) {
+    border-color: transparent;
+    background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.45), transparent 55%) padding-box, linear-gradient(180deg, var(--c), color-mix(in srgb, var(--c) 55%, #000)) padding-box, linear-gradient(135deg, #ffd84d, #7bf3ff, #ff6bd5, #ffd84d) border-box;
+  }
+  [data-theme="royale"] #list .tile:nth-child(5n+5) { border-color: #ffcf3f; }
+  /* Elixir cost = the game's place in the order. */
+  [data-theme="royale"] #list .tile::before {
+    content: counter(card); position: absolute; top: -10px; left: -10px; z-index: 2; width: 30px; height: 30px; border-radius: 50%;
+    display: grid; place-items: center; font: 400 17px var(--display); color: #fff; text-shadow: var(--stroke-sm);
+    background: radial-gradient(circle at 35% 30%, #ffb8fb, #e14bf5 45%, #8f12a8); border: 2px solid #3d0a4a;
+  }
+  [data-theme="royale"] #list .tile:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 2px rgba(0,0,0,.35), 0 9px 0 var(--line); }
+  [data-theme="royale"] #list .tile.current { outline: none; transform: translateY(-6px) scale(1.04); box-shadow: inset 0 0 0 2px rgba(0,0,0,.35), 0 0 0 3px #ffd84d, 0 0 22px #ffd84d, 0 9px 0 var(--line); animation: royale-bob 1.6s ease-in-out infinite; }
+  @keyframes royale-bob { 50% { transform: translateY(-10px) scale(1.04); } }
+  [data-theme="royale"] #list .badge { flex: 1; width: 100%; height: auto; border: 0; background: transparent; }
+  [data-theme="royale"] #list .badge svg { width: 54px; height: 54px; filter: drop-shadow(0 3px 0 rgba(0,0,0,.4)); }
+  [data-theme="royale"] #list .info { flex: none; width: 100%; text-align: center; }
+  [data-theme="royale"] #list .info a { font: 400 13px/1.1 var(--display); white-space: normal; letter-spacing: .02em; text-shadow: var(--stroke-sm); }
+  [data-theme="royale"] #list .info small { display: none; }
+  [data-theme="royale"] #list .check { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border: 2px solid #fff; border-radius: 7px; background: rgba(0,0,0,.35); box-shadow: none; }
+  [data-theme="royale"] #list .check svg { stroke: #fff; width: 14px; height: 14px; }
+  [data-theme="royale"] #list .check:active { transform: none; }
+  [data-theme="royale"] #list .tile.done { transform: none; border-color: #5d6a80; background: linear-gradient(180deg, #7a8699, #3f4859); box-shadow: inset 0 0 0 2px rgba(0,0,0,.35), 0 5px 0 var(--line); }
+  [data-theme="royale"] #list .tile.done .check { background: #3ecb3e; }
+  [data-theme="royale"] #list .tile.done .info a { text-decoration: none; }
+  [data-theme="royale"] #list .tile.done .badge { filter: grayscale(.9) brightness(.8); }
+  [data-theme="royale"] #list .tile.done::before { filter: grayscale(1); }
+  [data-theme="royale"] .stamp { display: none; }
+  /* Blue 3D buttons. */
+  [data-theme="royale"] .row { gap: 10px; margin-top: 30px; }
+  [data-theme="royale"] .btn {
+    padding: 10px 14px; border: 3px solid #0b2f66; border-radius: 12px; color: #fff; text-shadow: var(--stroke-sm);
+    background: linear-gradient(180deg, #64b5ff, #2f8bf0 55%, #1f6fd1); box-shadow: inset 0 -4px 0 #17539c, inset 0 2px 0 rgba(255,255,255,.5), 0 4px 0 #0b2f66;
+    font: 400 14px var(--display); letter-spacing: .04em; text-transform: uppercase;
+  }
+  [data-theme="royale"] .btn:hover { background: linear-gradient(180deg, #7cc2ff, #3d97f5 55%, #2a7bdc); color: #fff; }
+  [data-theme="royale"] .btn:active { transform: translateY(3px); box-shadow: inset 0 -2px 0 #17539c, 0 1px 0 #0b2f66; }
+  [data-theme="royale"] .btn.danger { background: linear-gradient(180deg, #ff8a7a, #f04a3a 55%, #c9301f); border-color: #5a0c04; box-shadow: inset 0 -4px 0 #9a2213, inset 0 2px 0 rgba(255,255,255,.5), 0 4px 0 #5a0c04; }
+  /* Finishing everything = VICTORY. */
+  [data-theme="royale"] .banner {
+    padding: 14px; border: 3px solid var(--line); border-radius: 16px; color: #fff; text-shadow: var(--stroke-sm);
+    background: radial-gradient(ellipse at 50% 0%, #2a6fd6, #0f2350 70%); box-shadow: 0 5px 0 var(--line); font: 400 16px var(--display);
+  }
+  [data-theme="royale"] .banner::before { content: "VICTORY!"; display: block; font: 400 44px/1 var(--display); color: #ffd23f; text-shadow: var(--stroke); margin-bottom: 6px; }
+  [data-theme="royale"] .banner small { font: 400 12px var(--display); color: var(--ink-soft); }
+  /* The clip is "TV Royale". */
+  [data-theme="royale"] .clip-head h2 { font-size: 0; text-transform: none; }
+  [data-theme="royale"] .clip-head h2 span { display: none; }
+  [data-theme="royale"] .clip-head h2::after { content: "TV Royale"; font: 400 30px var(--display); color: #fff; text-shadow: var(--stroke); }
+  [data-theme="royale"] .clip-card { border: 3px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: 0 5px 0 var(--line); }
+  [data-theme="royale"] .clip-frame, [data-theme="royale"] .clip-wrap.short { border-bottom: 3px solid var(--line); }
+  [data-theme="royale"] .clip-meta .t { font: 400 15px var(--display); letter-spacing: .02em; text-shadow: var(--stroke-sm); }
+  [data-theme="royale"] .clip-meta small { font: 400 12px var(--display); }
+  [data-theme="royale"] .pill { border: 2px solid #000; border-radius: 8px; background: #ffd23f; color: #fff; text-shadow: var(--stroke-sm); font: 400 12px var(--display); }
+  [data-theme="royale"] .section-title { font: 400 28px var(--display); color: #ffd23f; text-shadow: var(--stroke); }
+  [data-theme="royale"] .theme { border: 3px solid var(--line); border-radius: 14px; box-shadow: 0 5px 0 var(--line); }
+  [data-theme="royale"] .theme:hover { transform: translateY(-3px); box-shadow: 0 8px 0 var(--line); }
+  [data-theme="royale"] .theme.selected { outline: 3px solid #ffd84d; outline-offset: 3px; }
+  [data-theme="royale"] .edit input { border: 3px solid var(--line); border-radius: 10px; background: #fff; color: #000; font: 600 14px system-ui, sans-serif; }
+  [data-theme="royale"] .edit .tile { border: 3px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: 0 4px 0 var(--line); }
+
   /* ---------- previews in the theme picker ---------- */
   .theme .nm { font-family: var(--display); }
   .theme[data-theme="win98"] .pv { background: #008080; border-bottom: 2px solid #808080; }
@@ -503,11 +635,21 @@
   .theme[data-theme="xp"] .pv-card { border-radius: 5px 5px 0 0; background: #ece9d8; border-top: 7px solid #0053ee; height: 26px; }
   .theme[data-theme="xp"] .pv-btn { border-radius: 8px; background: linear-gradient(180deg, #74d46d, #2a8a27); }
   .theme[data-theme="xp"] .nm { font: italic 700 15px "Trebuchet MS", Tahoma, sans-serif; }
+  .theme[data-theme="royale"] .pv { background: repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 8px, transparent 8px 16px), radial-gradient(ellipse at 50% 0%, #4aa3ff, #1d5fc4 60%, #10357a); border-bottom: 3px solid #071433; }
+  .theme[data-theme="royale"] .pv-card { height: 20px; border: 2px solid #071433; border-radius: 6px; background: linear-gradient(180deg, #ff9cf8, #b81ad6); box-shadow: none; }
+  .theme[data-theme="royale"] .pv-btn { height: 22px; border: 2px solid #5a3400; border-radius: 7px; background: linear-gradient(180deg, #ffe066, #ff9f00); box-shadow: inset 0 -3px 0 #d97f00, 0 2px 0 #5a3400; }
+  .theme[data-theme="royale"] .dots i { border-radius: 3px; width: 10px; height: 13px; border-color: #071433; }
+  .theme[data-theme="royale"] .nm { font: 400 17px "Lilita One", sans-serif; color: #ffd23f; text-shadow: 0 1px 0 #000, 1px 0 0 #000, -1px 0 0 #000, 0 -1px 0 #000, 0 2px 0 rgba(0,0,0,.45); }
 
   /* ---------- skins on phones ---------- */
   @media (max-width: 480px) {
     [data-theme="win98"] h1 { font-size: 30px; }
     [data-theme="xp"] h1 { font-size: 36px; }
+    [data-theme="royale"] h1 { font-size: 40px; }
+    [data-theme="royale"] .play strong { font-size: 24px; }
+    [data-theme="royale"] .stat { padding-left: 36px; background-size: 24px 24px; background-position: 6px 50%; }
+    [data-theme="royale"] .stat b { font-size: 20px; }
+    [data-theme="royale"] .row .btn { font-size: 12px; padding: 10px 6px; }
     [data-theme="xp"] .play strong { font-size: 21px; }
     [data-theme="xp"] #play > .row .btn { padding: 6px 8px; }
     [data-theme="xp"] #play > .row #openAll { padding: 6px 12px 6px 10px; font-size: 13px; }
@@ -860,6 +1002,7 @@ const THEMES = [
   { id: "amphoitza", name: "Amphoitza", by: "Original · follows light/dark" },
   { id: "win98", name: "Windows 98", by: "after 98.css by Jordan Scales" },
   { id: "xp", name: "Windows XP", by: "after XP.css by Adam Hammad" },
+  { id: "royale", name: "Royale", by: "inspired by Clash Royale" },
 ];
 const THEME_KEY = "amphoitza.theme";
 
