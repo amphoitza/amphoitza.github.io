@@ -48,6 +48,7 @@
   }
 
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; } /* themes restyle display a lot; hidden must always win */
   html { -webkit-tap-highlight-color: transparent; }
   body {
     margin: 0;
@@ -492,137 +493,197 @@
   [data-theme="xp"] .edit input:focus { box-shadow: none; outline: 1px solid #316ac5; }
   [data-theme="xp"] .edit .tile { border: 0; border-radius: 8px 8px 0 0; background: #ece9d8; box-shadow: var(--xp-frame); }
 
-  /* ---------- Royale (inspired by Clash Royale; all art drawn here, no game assets) ----------
-     Layout: games become a deck of cards with rarity frames and elixir numbers, the play button
-     is the big yellow Battle button, progress is the elixir bar, stats are resource bars. */
+  /* ---------- Clash Royale (fan theme; every shape is drawn here, no game assets) ----------
+     Layout: ribbon title, resource counters, Battle button with swords, elixir bar with a drop counter,
+     games as a deck of rarity-framed cards, VICTORY with crowns, and a bottom tab bar like the game's. */
   [data-theme="royale"] {
-    --paper: #1d5fc4; --card: #0f2350; --dim: #0b1b40; --ink: #ffffff; --ink-soft: #a9c8ff; --line: #071433;
+    --paper: #2a63b8; --card: #0f2350; --dim: #0b1b40; --ink: #ffffff; --ink-soft: #b8d3ff; --line: #071433;
     --yellow: #ffd23f; --pink: #d55cf5; --success: #3ecb3e; --danger: #ff4a4a; --on-c: #ffffff;
-    --g-wordleRo: #f7c843; --g-wordle: #4cbf56; --g-connections: #a35ce0; --g-size: #ff8a3d; --g-geo: #3a8df0;
+    --g-wordleRo: #f2b632; --g-wordle: #3fae4a; --g-connections: #8b47cf; --g-size: #f2762b; --g-geo: #2f7fe0;
     --display: "Lilita One", "Arial Black", Impact, sans-serif; --mono: var(--display);
-    --stroke: 0 2px 0 #000, 2px 0 0 #000, -2px 0 0 #000, 0 -2px 0 #000, 2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000, 0 4px 0 rgba(0,0,0,.45);
-    --stroke-sm: 0 1px 0 #000, 1px 0 0 #000, -1px 0 0 #000, 0 -1px 0 #000, 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000, 0 2px 0 rgba(0,0,0,.45);
+    --stroke: 0 3px 0 #000, 2px 0 0 #000, -2px 0 0 #000, 0 -2px 0 #000, 2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000, 0 5px 0 rgba(0,0,0,.4);
+    --stroke-sm: 0 2px 0 #000, 1.5px 0 0 #000, -1.5px 0 0 #000, 0 -1.5px 0 #000, 1.5px 1.5px 0 #000, -1.5px 1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px -1.5px 0 #000;
+    --drop: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 40'%3E%3Cdefs%3E%3CradialGradient id='g' cx='.38' cy='.6' r='.65'%3E%3Cstop offset='0' stop-color='%23ffd0fc'/%3E%3Cstop offset='.45' stop-color='%23e94cf7'/%3E%3Cstop offset='1' stop-color='%238a0fa3'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpath d='M16 2C16 2 3 18 3 26a13 13 0 0 0 26 0C29 18 16 2 16 2z' fill='url(%23g)' stroke='%232d0638' stroke-width='2.5'/%3E%3Cellipse cx='11' cy='23' rx='3' ry='5' fill='%23fff' opacity='.55'/%3E%3C/svg%3E");
+    --crown-blue: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M3 24 5 9l6 7 5-10 5 10 6-7 2 15z' fill='%2342a5ff' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3Crect x='4' y='24' width='24' height='4' rx='1' fill='%231f6fd1' stroke='%23000' stroke-width='2'/%3E%3Ccircle cx='16' cy='17' r='2.5' fill='%23fff' opacity='.8'/%3E%3C/svg%3E");
     --shadow: none; --shadow-lg: none;
     color-scheme: dark;
   }
   [data-theme="royale"] body {
-    font: 400 14px/1.35 var(--display); letter-spacing: .01em;
+    font: 400 14px/1.3 var(--display); letter-spacing: .02em;
     background:
-      repeating-linear-gradient(45deg, rgba(255,255,255,.035) 0 16px, transparent 16px 32px),
-      radial-gradient(ellipse at 50% 0%, #4aa3ff 0%, #1d5fc4 45%, #10357a 100%);
+      repeating-linear-gradient(45deg, rgba(255,255,255,.045) 0 2px, transparent 2px 46px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,.045) 0 2px, transparent 2px 46px),
+      radial-gradient(ellipse at 50% 20%, #4f9bf0 0%, #2a63b8 50%, #13336f 100%);
     background-attachment: fixed;
   }
-  [data-theme="royale"] h1 { font: 400 56px/.95 var(--display); text-transform: uppercase; letter-spacing: .01em; color: #fff; text-shadow: var(--stroke); }
-  [data-theme="royale"] h1 span { background: none; border: 0; box-shadow: none; padding: 0; margin-top: 4px; color: #ffd23f; text-shadow: var(--stroke); }
-  /* The date is a wooden chest with a gold band. */
+  [data-theme="royale"] main { padding-bottom: 110px; }
+  /* Title on a ribbon banner. */
+  [data-theme="royale"] header { align-items: center; }
+  [data-theme="royale"] h1 {
+    position: relative; padding: 8px 34px 12px; font: 400 40px/1 var(--display); text-transform: uppercase; color: #fff; text-shadow: var(--stroke);
+    background: linear-gradient(180deg, #5db2ff 0%, #2f86ee 50%, #1f63c4 51%, #1a56ad 100%);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 50%, 100% 100%, 0 100%, 18px 50%);
+    filter: drop-shadow(0 4px 0 rgba(0,0,0,.35));
+  }
+  [data-theme="royale"] h1 br { display: none; }
+  [data-theme="royale"] h1 span { display: inline; margin: 0 0 0 .25em; padding: 0; background: none; border: 0; box-shadow: none; transform: none; color: #ffd23f; text-shadow: var(--stroke); }
+  /* The date is a golden chest. */
   [data-theme="royale"] .stamp-date {
-    transform: rotate(3deg); padding: 8px 12px; border: 3px solid #3d1f06; border-radius: 12px; color: #fff; text-shadow: var(--stroke-sm);
-    background: linear-gradient(180deg, #c27a35 0%, #9a5a22 48%, #ffcf3f 48% 56%, #8a4c18 56%, #6d3a10 100%);
-    box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 5px 0 #3d1f06; font: 400 13px var(--display); letter-spacing: .04em;
+    transform: rotate(4deg); padding: 8px 14px 10px; border: 3px solid #3d1f06; border-radius: 14px 14px 10px 10px; color: #fff; text-shadow: var(--stroke-sm);
+    background: linear-gradient(180deg, #ffe27a 0%, #f2b632 40%, #3d1f06 40% 44%, #e09a1a 44%, #b8700c 100%);
+    box-shadow: inset 0 3px 0 rgba(255,255,255,.55), inset 0 -4px 0 rgba(0,0,0,.2), 0 5px 0 #3d1f06; font: 400 12px var(--display); letter-spacing: .05em;
   }
-  [data-theme="royale"] .stamp-date b { font: 400 30px var(--display); text-shadow: var(--stroke); }
-  /* Stats are the resource bars along the top of the menu. */
-  [data-theme="royale"] .stats { gap: 10px; }
+  [data-theme="royale"] .stamp-date b { font: 400 30px/1.1 var(--display); text-shadow: var(--stroke); }
+  /* Resource counters: icon sticking out of a dark pill, green "+" on the gems. */
+  [data-theme="royale"] .stats { gap: 18px; margin: 26px 0 16px 12px; }
   [data-theme="royale"] .stat {
-    position: relative; padding: 6px 10px 6px 46px; border: 3px solid var(--line); border-radius: 14px; background: var(--card);
-    box-shadow: inset 0 3px 0 rgba(0,0,0,.35), 0 3px 0 var(--line);
-    background-repeat: no-repeat; background-position: 8px 50%; background-size: 30px 30px;
+    position: relative; overflow: visible; padding: 4px 10px 4px 30px; border: 2px solid rgba(0,0,0,.6); border-radius: 10px;
+    background: rgba(5,14,38,.72); box-shadow: inset 0 2px 0 rgba(0,0,0,.4);
   }
-  [data-theme="royale"] .stat:nth-child(1) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M3 24 5 9l6 7 5-10 5 10 6-7 2 15z' fill='%23ffd23f' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3Crect x='4' y='24' width='24' height='4' rx='1' fill='%23e3a100' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E"); }
-  [data-theme="royale"] .stat:nth-child(2) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M9 7H4v2a5 5 0 0 0 5 5m14-7h5v2a5 5 0 0 1-5 5' fill='none' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M9 4h14v7a7 7 0 0 1-14 0z' fill='%23ffd23f' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M14 18h4v5h-4zm-4 5h12v5H10z' fill='%23e3a100' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E"); }
-  [data-theme="royale"] .stat:nth-child(3) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M8 4h16l6 9-14 16L2 13z' fill='%2340e070' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M2 13h28M12 4l-4 9 8 16 8-16-4-9' fill='none' stroke='%23178a3a' stroke-width='1.5'/%3E%3C/svg%3E"); }
-  [data-theme="royale"] .stat small { font: 400 11px var(--display); letter-spacing: .06em; color: #ffd23f; text-shadow: var(--stroke-sm); }
-  [data-theme="royale"] .stat b { font: 400 24px var(--display); letter-spacing: .01em; text-shadow: var(--stroke-sm); }
+  [data-theme="royale"] .stat::before { content: ""; position: absolute; left: -16px; top: 50%; width: 40px; height: 40px; transform: translateY(-50%); background: center / contain no-repeat; filter: drop-shadow(0 2px 0 rgba(0,0,0,.5)); }
+  [data-theme="royale"] .stat:nth-child(1)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M3 24 5 9l6 7 5-10 5 10 6-7 2 15z' fill='%23ffd23f' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3Crect x='4' y='24' width='24' height='4' rx='1' fill='%23e3a100' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E"); }
+  [data-theme="royale"] .stat:nth-child(2)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M9 7H4v2a5 5 0 0 0 5 5m14-7h5v2a5 5 0 0 1-5 5' fill='none' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M9 4h14v7a7 7 0 0 1-14 0z' fill='%23ffd23f' stroke='%23000' stroke-width='2'/%3E%3Cpath d='M14 18h4v5h-4zm-4 5h12v5H10z' fill='%23e3a100' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E"); }
+  [data-theme="royale"] .stat:nth-child(3)::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M8 4h16l6 9-14 16L2 13z' fill='%2340e070' stroke='%23000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M2 13h28M12 4l-4 9 8 16 8-16-4-9' fill='none' stroke='%23178a3a' stroke-width='1.5'/%3E%3C/svg%3E"); }
+  [data-theme="royale"] .stat:nth-child(3)::after {
+    content: "+"; position: absolute; right: -8px; top: 50%; width: 22px; height: 22px; transform: translateY(-50%); border: 2px solid #0d4a16; border-radius: 6px;
+    display: grid; place-items: center; font: 400 18px/1 var(--display); color: #fff; text-shadow: var(--stroke-sm);
+    background: linear-gradient(180deg, #7be36f, #2fa83c); box-shadow: inset 0 -3px 0 #1f7a2a;
+  }
+  [data-theme="royale"] .stat small { font: 400 10px var(--display); letter-spacing: .06em; color: #ffd23f; text-shadow: var(--stroke-sm); }
+  [data-theme="royale"] .stat b { font: 400 22px/1.1 var(--display); text-shadow: var(--stroke-sm); }
   [data-theme="royale"] .stat.fire b::after { display: none; }
-  /* Progress is the elixir bar. */
-  [data-theme="royale"] .segs { gap: 3px; padding: 4px; border: 3px solid var(--line); border-radius: 12px; background: #2b1640; box-shadow: inset 0 3px 0 rgba(0,0,0,.4); }
-  [data-theme="royale"] .seg { height: 16px; border: 0; border-radius: 5px; background: rgba(255,255,255,.08); }
-  [data-theme="royale"] .seg i { background: linear-gradient(180deg, #ff9cf8 0%, #e14bf5 35%, #b81ad6 100%) !important; box-shadow: inset 0 2px 0 rgba(255,255,255,.45); }
+  /* Elixir bar with a drop showing how many games are done. */
+  [data-theme="royale"] .segs { position: relative; gap: 3px; margin-left: 24px; padding: 5px 6px 5px 26px; border: 3px solid #000; border-radius: 10px; background: #2b0f3d; box-shadow: inset 0 3px 0 rgba(0,0,0,.45); }
+  [data-theme="royale"] .segs::before {
+    content: attr(data-count); position: absolute; left: -26px; top: 50%; width: 42px; height: 52px; transform: translateY(-58%); z-index: 1;
+    display: grid; place-items: center; padding-top: 14px; background: var(--drop) center / contain no-repeat;
+    font: 400 22px var(--display); color: #fff; text-shadow: var(--stroke-sm);
+  }
+  [data-theme="royale"] .seg { height: 18px; border: 0; border-radius: 4px; background: rgba(255,255,255,.07); }
+  [data-theme="royale"] .seg i { background: linear-gradient(180deg, #ffb0fb 0%, #ea52f8 30%, #c021dd 75%, #9a13b5 100%) !important; box-shadow: inset 0 2px 0 rgba(255,255,255,.5); }
   /* The Battle button. */
   [data-theme="royale"] .play {
-    border: 3px solid #5a3400; border-radius: 16px; color: #fff; padding: 14px 18px; text-shadow: var(--stroke);
-    background: linear-gradient(180deg, #ffe066 0%, #ffcc1f 45%, #ffb300 55%, #ff9f00 100%);
-    box-shadow: inset 0 -7px 0 #d97f00, inset 0 3px 0 rgba(255,255,255,.6), 0 6px 0 #5a3400;
+    border: 3px solid #000; border-radius: 16px; color: #fff; padding: 14px 18px; text-shadow: var(--stroke);
+    background: linear-gradient(180deg, #ffe680 0%, #ffd23a 48%, #ffb800 52%, #f59a00 100%);
+    box-shadow: inset 0 -8px 0 #d07a00, inset 0 3px 0 rgba(255,255,255,.7), 0 6px 0 #000;
   }
-  [data-theme="royale"] .play:hover { transform: none; filter: brightness(1.06); box-shadow: inset 0 -7px 0 #d97f00, inset 0 3px 0 rgba(255,255,255,.6), 0 6px 0 #5a3400; }
-  [data-theme="royale"] .play:active { transform: translateY(5px); box-shadow: inset 0 -3px 0 #d97f00, 0 1px 0 #5a3400; }
+  [data-theme="royale"] .play:hover { transform: none; filter: brightness(1.06); box-shadow: inset 0 -8px 0 #d07a00, inset 0 3px 0 rgba(255,255,255,.7), 0 6px 0 #000; }
+  [data-theme="royale"] .play:active { transform: translateY(5px); box-shadow: inset 0 -3px 0 #d07a00, 0 1px 0 #000; }
   [data-theme="royale"] .play small { font: 400 13px var(--display); letter-spacing: .06em; opacity: 1; text-shadow: var(--stroke-sm); }
-  [data-theme="royale"] .play strong { font: 400 32px var(--display); text-transform: uppercase; letter-spacing: .02em; }
-  [data-theme="royale"] .play .go { width: 52px; height: 52px; border: 3px solid #0b2f66; background: linear-gradient(180deg, #64b5ff, #1f6fd1); color: #fff; box-shadow: inset 0 -4px 0 #17539c, 0 3px 0 #0b2f66; text-shadow: var(--stroke-sm); animation: none; }
-  [data-theme="royale"] .play.finished { background: linear-gradient(180deg, #5bd36a, #2fa83c); border-color: #0d4a16; box-shadow: inset 0 -7px 0 #1f7a2a, inset 0 3px 0 rgba(255,255,255,.5), 0 6px 0 #0d4a16; }
-  [data-theme="royale"] .play.finished .go { background: linear-gradient(180deg, #ffe066, #ff9f00); border-color: #5a3400; box-shadow: inset 0 -4px 0 #d97f00, 0 3px 0 #5a3400; }
-  [data-theme="royale"] :is(.hint, .note) { font: 400 12px var(--display); letter-spacing: .03em; color: #fff; background: rgba(7,20,51,.85); border-radius: 10px; margin-top: 18px; }
+  [data-theme="royale"] .play strong { font: 400 34px/1.05 var(--display); text-transform: uppercase; letter-spacing: .02em; }
+  [data-theme="royale"] .play .go { width: 56px; height: 56px; border: 0; background: none; font-size: 0; animation: none; }
+  [data-theme="royale"] .play .go::before { content: "\2694\FE0E"; font: 400 44px/1 "Segoe UI Symbol", "DejaVu Sans", sans-serif; color: #fff; text-shadow: var(--stroke); }
+  [data-theme="royale"] .play.finished { background: linear-gradient(180deg, #8ae67f 0%, #4fc95a 48%, #34b043 52%, #229133 100%); box-shadow: inset 0 -8px 0 #187a26, inset 0 3px 0 rgba(255,255,255,.6), 0 6px 0 #000; }
+  [data-theme="royale"] .play.finished .go::before { content: "\2714\FE0E"; }
+  [data-theme="royale"] :is(.hint, .note) { font: 400 12px var(--display); letter-spacing: .03em; color: #fff; background: rgba(5,14,38,.8); border-radius: 10px; margin-top: 18px; }
   [data-theme="royale"] kbd { font: 400 11px var(--display); color: #000; border: 2px solid #000; border-radius: 5px; background: #ffd23f; }
   /* The game list is a deck of cards. */
-  [data-theme="royale"] #list { counter-reset: card; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 14px; }
+  [data-theme="royale"] #list { counter-reset: card; grid-template-columns: repeat(auto-fill, minmax(102px, 1fr)); gap: 16px 12px; margin-top: 8px; }
   [data-theme="royale"] #list .tile {
-    counter-increment: card; flex-direction: column; justify-content: flex-end; align-items: center; gap: 4px; aspect-ratio: 3 / 4;
-    padding: 10px 6px 8px; border: 4px solid #a8c8ef; border-radius: 12px; color: #fff; transform: none; transition: transform .15s;
-    background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.45), transparent 55%), linear-gradient(180deg, var(--c), color-mix(in srgb, var(--c) 55%, #000));
-    box-shadow: inset 0 0 0 2px rgba(0,0,0,.35), 0 5px 0 var(--line);
+    counter-increment: card; flex-direction: column; align-items: stretch; gap: 5px; aspect-ratio: 5 / 7;
+    padding: 6px 6px 5px; border: 3px solid #000; border-radius: 12px; transform: none; transition: transform .15s;
+    background: linear-gradient(180deg, #e6f1ff 0%, #a9c6ea 45%, #7d9fcf 100%);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.8), inset 0 -3px 0 rgba(0,0,0,.25), 0 5px 0 rgba(0,0,0,.55);
   }
-  [data-theme="royale"] #list .tile:nth-child(5n+2) { border-color: #ff9d2a; }
-  [data-theme="royale"] #list .tile:nth-child(5n+3) { border-color: #c25cf0; }
+  [data-theme="royale"] #list .tile:nth-child(5n+2) { background: linear-gradient(180deg, #ffe3b0 0%, #ffad4a 45%, #e5780f 100%); }
+  [data-theme="royale"] #list .tile:nth-child(5n+3) { background: linear-gradient(180deg, #f3c9ff 0%, #c46cf0 45%, #8e2fc9 100%); }
   [data-theme="royale"] #list .tile:nth-child(5n+4) {
-    border-color: transparent;
-    background: radial-gradient(circle at 50% 30%, rgba(255,255,255,.45), transparent 55%) padding-box, linear-gradient(180deg, var(--c), color-mix(in srgb, var(--c) 55%, #000)) padding-box, linear-gradient(135deg, #ffd84d, #7bf3ff, #ff6bd5, #ffd84d) border-box;
+    background: linear-gradient(110deg, #ffe066, #8ff7ff, #ff8ae0, #fff3a0, #8ff7ff, #ffe066) 0 0 / 300% 100%;
+    animation: royale-shimmer 4s linear infinite;
   }
-  [data-theme="royale"] #list .tile:nth-child(5n+5) { border-color: #ffcf3f; }
-  /* Elixir cost = the game's place in the order. */
+  @keyframes royale-shimmer { to { background-position: 300% 0; } }
+  [data-theme="royale"] #list .tile:nth-child(5n+5) { background: linear-gradient(180deg, #fff2a8 0%, #ffd23a 45%, #d99a00 100%); }
+  /* Elixir drop in the corner = the game's place in the order. */
   [data-theme="royale"] #list .tile::before {
-    content: counter(card); position: absolute; top: -10px; left: -10px; z-index: 2; width: 30px; height: 30px; border-radius: 50%;
-    display: grid; place-items: center; font: 400 17px var(--display); color: #fff; text-shadow: var(--stroke-sm);
-    background: radial-gradient(circle at 35% 30%, #ffb8fb, #e14bf5 45%, #8f12a8); border: 2px solid #3d0a4a;
+    content: counter(card); position: absolute; top: -14px; left: -10px; z-index: 2; width: 30px; height: 38px; padding-top: 11px;
+    display: grid; place-items: center; background: var(--drop) center / contain no-repeat;
+    font: 400 17px var(--display); color: #fff; text-shadow: var(--stroke-sm);
   }
-  [data-theme="royale"] #list .tile:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 2px rgba(0,0,0,.35), 0 9px 0 var(--line); }
-  [data-theme="royale"] #list .tile.current { outline: none; transform: translateY(-6px) scale(1.04); box-shadow: inset 0 0 0 2px rgba(0,0,0,.35), 0 0 0 3px #ffd84d, 0 0 22px #ffd84d, 0 9px 0 var(--line); animation: royale-bob 1.6s ease-in-out infinite; }
-  @keyframes royale-bob { 50% { transform: translateY(-10px) scale(1.04); } }
-  [data-theme="royale"] #list .badge { flex: 1; width: 100%; height: auto; border: 0; background: transparent; }
-  [data-theme="royale"] #list .badge svg { width: 54px; height: 54px; filter: drop-shadow(0 3px 0 rgba(0,0,0,.4)); }
-  [data-theme="royale"] #list .info { flex: none; width: 100%; text-align: center; }
-  [data-theme="royale"] #list .info a { font: 400 13px/1.1 var(--display); white-space: normal; letter-spacing: .02em; text-shadow: var(--stroke-sm); }
+  [data-theme="royale"] #list .badge {
+    flex: 1; width: 100%; height: auto; border: 2px solid rgba(0,0,0,.55); border-radius: 7px;
+    background: radial-gradient(circle at 50% 35%, rgba(255,255,255,.4), transparent 60%), linear-gradient(180deg, var(--c), color-mix(in srgb, var(--c) 50%, #000));
+    box-shadow: inset 0 0 12px rgba(0,0,0,.45);
+  }
+  [data-theme="royale"] #list .badge svg { width: 54px; height: 54px; filter: drop-shadow(0 3px 0 rgba(0,0,0,.45)); }
+  [data-theme="royale"] #list .info { flex: none; width: 100%; padding: 3px 2px; border-radius: 5px; background: rgba(0,0,0,.35); text-align: center; }
+  [data-theme="royale"] #list .info a { font: 400 12px/1.1 var(--display); color: #fff; white-space: normal; letter-spacing: .02em; text-shadow: var(--stroke-sm); }
   [data-theme="royale"] #list .info small { display: none; }
-  [data-theme="royale"] #list .check { position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border: 2px solid #fff; border-radius: 7px; background: rgba(0,0,0,.35); box-shadow: none; }
-  [data-theme="royale"] #list .check svg { stroke: #fff; width: 14px; height: 14px; }
+  [data-theme="royale"] #list .check { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border: 2px solid #000; border-radius: 7px; background: rgba(255,255,255,.85); box-shadow: 0 2px 0 rgba(0,0,0,.5); }
+  [data-theme="royale"] #list .check svg { stroke: #fff; width: 14px; height: 14px; stroke-width: 4.5; }
   [data-theme="royale"] #list .check:active { transform: none; }
-  [data-theme="royale"] #list .tile.done { transform: none; border-color: #5d6a80; background: linear-gradient(180deg, #7a8699, #3f4859); box-shadow: inset 0 0 0 2px rgba(0,0,0,.35), 0 5px 0 var(--line); }
-  [data-theme="royale"] #list .tile.done .check { background: #3ecb3e; }
-  [data-theme="royale"] #list .tile.done .info a { text-decoration: none; }
-  [data-theme="royale"] #list .tile.done .badge { filter: grayscale(.9) brightness(.8); }
+  [data-theme="royale"] #list .tile:hover { transform: translateY(-4px); }
+  [data-theme="royale"] #list .tile.current { outline: none; z-index: 1; box-shadow: inset 0 2px 0 rgba(255,255,255,.8), 0 0 0 3px #fff6a8, 0 0 24px 4px #ffd84d, 0 5px 0 rgba(0,0,0,.55); animation: royale-bob 1.6s ease-in-out infinite; }
+  [data-theme="royale"] #list .tile.current:nth-child(5n+4) { animation: royale-bob 1.6s ease-in-out infinite, royale-shimmer 4s linear infinite; }
+  @keyframes royale-bob { 0%, 100% { transform: translateY(-4px) scale(1.05); } 50% { transform: translateY(-10px) scale(1.05); } }
+  [data-theme="royale"] #list .tile.done { transform: none; animation: none; background: linear-gradient(180deg, #a3abb8, #646d7c); }
+  [data-theme="royale"] #list .tile.done .badge { filter: grayscale(1) brightness(.75); }
   [data-theme="royale"] #list .tile.done::before { filter: grayscale(1); }
+  [data-theme="royale"] #list .tile.done .check { background: linear-gradient(180deg, #7be36f, #2fa83c); }
+  [data-theme="royale"] #list .tile.done .info a { text-decoration: none; color: #d5d9e0; }
   [data-theme="royale"] .stamp { display: none; }
-  /* Blue 3D buttons. */
-  [data-theme="royale"] .row { gap: 10px; margin-top: 30px; }
+  /* Bottom tab bar, with the raised centre tab like the game's Battle tab. */
+  [data-theme="royale"] #play > .row {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: flex-end; gap: 0; margin: 0;
+    padding: 0 max(0px, calc((100vw - 640px) / 2)) env(safe-area-inset-bottom, 0px); border-top: 3px solid #000;
+    background: linear-gradient(180deg, #2a4d8f, #17305f); box-shadow: inset 0 3px 0 rgba(255,255,255,.18);
+  }
+  [data-theme="royale"] #play > .row .spacer { display: none; }
+  [data-theme="royale"] #play > .row .btn {
+    flex: 1; min-width: 0; height: 64px; padding: 26px 4px 6px; border: 0; border-right: 2px solid rgba(0,0,0,.4); border-radius: 0;
+    position: relative; background: transparent; box-shadow: none; color: #fff; text-shadow: var(--stroke-sm);
+    font: 400 12px var(--display); letter-spacing: .04em; text-transform: uppercase;
+  }
+  [data-theme="royale"] #play > .row .btn::before { position: absolute; left: 0; right: 0; top: 6px; font: 400 22px/1 "Segoe UI Symbol", "DejaVu Sans", sans-serif; color: #fff; text-shadow: var(--stroke-sm); }
+  [data-theme="royale"] #play > .row #resetToday { order: 1; }
+  [data-theme="royale"] #play > .row #resetToday::before { content: "\21BB"; }
+  [data-theme="royale"] #play > .row #openAll {
+    order: 2; flex: 1.3; height: 78px; margin-top: -14px; padding-top: 36px; border: 3px solid #000; border-bottom: 0; border-radius: 14px 14px 0 0;
+    background: linear-gradient(180deg, #6fbcff, #3b8ef0 50%, #2366c9); box-shadow: inset 0 3px 0 rgba(255,255,255,.45);
+  }
+  [data-theme="royale"] #play > .row #openAll::before { content: "\2694\FE0E"; top: 6px; font-size: 30px; }
+  [data-theme="royale"] #play > .row #settingsBtn { order: 3; border-right: 0; font-size: 0; }
+  [data-theme="royale"] #play > .row #settingsBtn::before { content: "\2699\FE0E"; }
+  [data-theme="royale"] #play > .row #settingsBtn::after { content: "SETTINGS"; font: 400 12px var(--display); letter-spacing: .04em; }
+  [data-theme="royale"] #play > .row .btn:hover { background: rgba(255,255,255,.08); color: #fff; }
+  [data-theme="royale"] #play > .row #openAll:hover { background: linear-gradient(180deg, #86c8ff, #4a9af3 50%, #2a70d2); }
+  [data-theme="royale"] #play > .row .btn:active { transform: none; filter: brightness(.9); }
+  /* Other buttons (settings, edit): blue 3D. */
   [data-theme="royale"] .btn {
-    padding: 10px 14px; border: 3px solid #0b2f66; border-radius: 12px; color: #fff; text-shadow: var(--stroke-sm);
-    background: linear-gradient(180deg, #64b5ff, #2f8bf0 55%, #1f6fd1); box-shadow: inset 0 -4px 0 #17539c, inset 0 2px 0 rgba(255,255,255,.5), 0 4px 0 #0b2f66;
+    padding: 10px 14px; border: 3px solid #000; border-radius: 12px; color: #fff; text-shadow: var(--stroke-sm);
+    background: linear-gradient(180deg, #6fbcff, #3b8ef0 50%, #2366c9); box-shadow: inset 0 -4px 0 #17539c, inset 0 3px 0 rgba(255,255,255,.45), 0 4px 0 #000;
     font: 400 14px var(--display); letter-spacing: .04em; text-transform: uppercase;
   }
-  [data-theme="royale"] .btn:hover { background: linear-gradient(180deg, #7cc2ff, #3d97f5 55%, #2a7bdc); color: #fff; }
-  [data-theme="royale"] .btn:active { transform: translateY(3px); box-shadow: inset 0 -2px 0 #17539c, 0 1px 0 #0b2f66; }
-  [data-theme="royale"] .btn.danger { background: linear-gradient(180deg, #ff8a7a, #f04a3a 55%, #c9301f); border-color: #5a0c04; box-shadow: inset 0 -4px 0 #9a2213, inset 0 2px 0 rgba(255,255,255,.5), 0 4px 0 #5a0c04; }
-  /* Finishing everything = VICTORY. */
-  [data-theme="royale"] .banner {
-    padding: 14px; border: 3px solid var(--line); border-radius: 16px; color: #fff; text-shadow: var(--stroke-sm);
-    background: radial-gradient(ellipse at 50% 0%, #2a6fd6, #0f2350 70%); box-shadow: 0 5px 0 var(--line); font: 400 16px var(--display);
+  [data-theme="royale"] .btn:hover { background: linear-gradient(180deg, #86c8ff, #4a9af3 50%, #2a70d2); color: #fff; }
+  [data-theme="royale"] .btn:active { transform: translateY(3px); box-shadow: inset 0 -2px 0 #17539c, 0 1px 0 #000; }
+  [data-theme="royale"] .btn.danger { background: linear-gradient(180deg, #ff8a7a, #f04a3a 50%, #c9301f); box-shadow: inset 0 -4px 0 #9a2213, inset 0 3px 0 rgba(255,255,255,.45), 0 4px 0 #000; }
+  [data-theme="royale"] #closeSettings, [data-theme="royale"] #saveEdit { background: linear-gradient(180deg, #8ae67f, #4fc95a 50%, #229133); box-shadow: inset 0 -4px 0 #187a26, inset 0 3px 0 rgba(255,255,255,.45), 0 4px 0 #000; }
+  /* VICTORY with three crowns. */
+  [data-theme="royale"] .banner { display: flex; flex-direction: column; align-items: center;
+    position: relative; padding: 56px 14px 14px; border: 3px solid #000; border-radius: 16px; color: #fff; text-shadow: var(--stroke-sm);
+    background: radial-gradient(ellipse at 50% 0%, #3d86e8, #13336f 75%); box-shadow: inset 0 3px 0 rgba(255,255,255,.25), 0 5px 0 #000; font: 400 16px var(--display);
   }
-  [data-theme="royale"] .banner::before { content: "VICTORY!"; display: block; font: 400 44px/1 var(--display); color: #ffd23f; text-shadow: var(--stroke); margin-bottom: 6px; }
+  [data-theme="royale"] .banner::before { content: ""; position: absolute; left: 50%; top: 10px; width: 132px; height: 40px; transform: translateX(-50%); background: var(--crown-blue) 0 0 / 40px 40px space; filter: drop-shadow(0 3px 0 rgba(0,0,0,.5)); }
+  [data-theme="royale"] .banner::after { content: "VICTORY!"; display: block; order: -1; font: 400 46px/1 var(--display); color: #ffd23f; text-shadow: var(--stroke); margin-top: 6px; }
   [data-theme="royale"] .banner small { font: 400 12px var(--display); color: var(--ink-soft); }
   /* The clip is "TV Royale". */
   [data-theme="royale"] .clip-head h2 { font-size: 0; text-transform: none; }
   [data-theme="royale"] .clip-head h2 span { display: none; }
-  [data-theme="royale"] .clip-head h2::after { content: "TV Royale"; font: 400 30px var(--display); color: #fff; text-shadow: var(--stroke); }
-  [data-theme="royale"] .clip-card { border: 3px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: 0 5px 0 var(--line); }
-  [data-theme="royale"] .clip-frame, [data-theme="royale"] .clip-wrap.short { border-bottom: 3px solid var(--line); }
+  [data-theme="royale"] .clip-head h2::after {
+    content: "TV ROYALE"; display: inline-block; padding: 6px 26px 9px; font: 400 26px/1 var(--display); color: #fff; text-shadow: var(--stroke);
+    background: linear-gradient(180deg, #ff8a7a 0%, #f04a3a 50%, #c9301f 51%, #a8230f 100%);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 50%, 100% 100%, 0 100%, 14px 50%);
+  }
+  [data-theme="royale"] .clip-card { border: 3px solid #000; border-radius: 14px; background: #13336f; box-shadow: inset 0 3px 0 rgba(255,255,255,.2), 0 5px 0 #000; }
+  [data-theme="royale"] .clip-frame, [data-theme="royale"] .clip-wrap.short { border-bottom: 3px solid #000; }
   [data-theme="royale"] .clip-meta .t { font: 400 15px var(--display); letter-spacing: .02em; text-shadow: var(--stroke-sm); }
   [data-theme="royale"] .clip-meta small { font: 400 12px var(--display); }
   [data-theme="royale"] .pill { border: 2px solid #000; border-radius: 8px; background: #ffd23f; color: #fff; text-shadow: var(--stroke-sm); font: 400 12px var(--display); }
   [data-theme="royale"] .section-title { font: 400 28px var(--display); color: #ffd23f; text-shadow: var(--stroke); }
-  [data-theme="royale"] .theme { border: 3px solid var(--line); border-radius: 14px; box-shadow: 0 5px 0 var(--line); }
-  [data-theme="royale"] .theme:hover { transform: translateY(-3px); box-shadow: 0 8px 0 var(--line); }
+  [data-theme="royale"] .theme { border: 3px solid #000; border-radius: 14px; box-shadow: 0 5px 0 #000; }
+  [data-theme="royale"] .theme:hover { transform: translateY(-3px); box-shadow: 0 8px 0 #000; }
   [data-theme="royale"] .theme.selected { outline: 3px solid #ffd84d; outline-offset: 3px; }
-  [data-theme="royale"] .edit input { border: 3px solid var(--line); border-radius: 10px; background: #fff; color: #000; font: 600 14px system-ui, sans-serif; }
-  [data-theme="royale"] .edit .tile { border: 3px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: 0 4px 0 var(--line); }
+  [data-theme="royale"] .edit input { border: 3px solid #000; border-radius: 10px; background: #fff; color: #000; font: 600 14px system-ui, sans-serif; }
+  [data-theme="royale"] .edit .tile { border: 3px solid #000; border-radius: 14px; background: #13336f; box-shadow: 0 4px 0 #000; }
 
   /* ---------- previews in the theme picker ---------- */
   .theme .nm { font-family: var(--display); }
@@ -645,11 +706,19 @@
   @media (max-width: 480px) {
     [data-theme="win98"] h1 { font-size: 30px; }
     [data-theme="xp"] h1 { font-size: 36px; }
-    [data-theme="royale"] h1 { font-size: 40px; }
-    [data-theme="royale"] .play strong { font-size: 24px; }
-    [data-theme="royale"] .stat { padding-left: 36px; background-size: 24px 24px; background-position: 6px 50%; }
-    [data-theme="royale"] .stat b { font-size: 20px; }
-    [data-theme="royale"] .row .btn { font-size: 12px; padding: 10px 6px; }
+    [data-theme="royale"] h1 { font-size: 26px; padding: 7px 24px 10px; }
+    [data-theme="royale"] .stamp-date b { font-size: 24px; }
+    [data-theme="royale"] .stats { gap: 16px; }
+    [data-theme="royale"] .stat { padding-left: 22px; }
+    [data-theme="royale"] .stat::before { width: 32px; height: 32px; left: -13px; }
+    [data-theme="royale"] .stat b { font-size: 18px; }
+    [data-theme="royale"] .play strong { font-size: 25px; }
+    [data-theme="royale"] .play .go::before { font-size: 36px; }
+    [data-theme="royale"] #list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 10px; }
+    [data-theme="royale"] #list .badge svg { width: 44px; height: 44px; }
+    [data-theme="royale"] #list .info a { font-size: 11px; }
+    [data-theme="royale"] #list .check { width: 20px; height: 20px; top: 9px; right: 9px; }
+    [data-theme="royale"] .banner::after { font-size: 38px; }
     [data-theme="xp"] .play strong { font-size: 21px; }
     [data-theme="xp"] #play > .row .btn { padding: 6px 8px; }
     [data-theme="xp"] #play > .row #openAll { padding: 6px 12px 6px 10px; font-size: 13px; }
@@ -889,6 +958,7 @@ function render() {
 
   const segs = $("segs");
   segs.innerHTML = "";
+  segs.dataset.count = doneCount; // shown by themes that draw a counter (e.g. the Clash Royale elixir drop)
   games.forEach((g, i) => {
     const s = document.createElement("div");
     s.className = "seg" + (isDone(g) ? " on" : "");
@@ -1002,7 +1072,7 @@ const THEMES = [
   { id: "amphoitza", name: "Amphoitza", by: "Original · follows light/dark" },
   { id: "win98", name: "Windows 98", by: "after 98.css by Jordan Scales" },
   { id: "xp", name: "Windows XP", by: "after XP.css by Adam Hammad" },
-  { id: "royale", name: "Royale", by: "inspired by Clash Royale" },
+  { id: "royale", name: "Clash Royale", by: "fan theme · all art drawn from scratch" },
 ];
 const THEME_KEY = "amphoitza.theme";
 
