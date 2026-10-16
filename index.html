@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Games</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236aaa64'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'>D</text></svg>">
+<style>
+  :root {
+    --bg: #f6f5f1;
+    --card: #ffffff;
+    --text: #1c1c1c;
+    --muted: #6b6b6b;
+    --border: #e2e0da;
+    --accent: #6aaa64;
+    --accent-ink: #ffffff;
+    --done: #e9f3e8;
+    --warn: #c9b458;
+    --danger: #c0392b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121213;
+      --card: #1d1d1f;
+      --text: #f0f0f0;
+      --muted: #9a9a9a;
+      --border: #333336;
+      --done: #1f2b1e;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 560px; margin: 0 auto; padding: 32px 16px 48px; }
+  header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  h1 { font-size: 28px; margin: 0; letter-spacing: -0.02em; }
+  .date { color: var(--muted); }
+  .stats { display: flex; gap: 16px; margin: 6px 0 20px; color: var(--muted); font-size: 14px; }
+  .stats b { color: var(--text); }
+
+  .progress { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; margin-bottom: 20px; }
+  .progress > div { height: 100%; background: var(--accent); width: 0; transition: width .3s; }
+
+  .next {
+    display: block; width: 100%;
+    padding: 18px; border: 0; border-radius: 14px;
+    background: var(--accent); color: var(--accent-ink);
+    font-size: 19px; font-weight: 700; cursor: pointer;
+    box-shadow: 0 2px 0 rgba(0,0,0,.12);
+  }
+  .next:hover { filter: brightness(1.06); }
+  .next:disabled { background: var(--border); color: var(--muted); cursor: default; box-shadow: none; }
+  .hint { text-align: center; color: var(--muted); font-size: 13px; margin: 8px 0 24px; }
+  kbd { border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; font-size: 12px; }
+
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  li {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 14px;
+  }
+  li.done { background: var(--done); }
+  li.done .name { text-decoration: line-through; color: var(--muted); }
+  li.current { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .num { width: 24px; height: 24px; flex: none; border-radius: 50%; display: grid; place-items: center;
+         font-size: 13px; font-weight: 700; background: var(--border); color: var(--muted); }
+  li.done .num { background: var(--accent); color: #fff; }
+  .name { flex: 1; min-width: 0; }
+  .name a { color: inherit; text-decoration: none; font-weight: 600; }
+  .name a:hover { text-decoration: underline; }
+  .name small { display: block; color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer; }
+
+  .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+  .btn {
+    padding: 9px 14px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--card); color: var(--text); cursor: pointer; font-size: 14px;
+  }
+  .btn:hover { border-color: var(--muted); }
+  .btn.danger { color: var(--danger); }
+  .icon { padding: 4px 8px; font-size: 13px; }
+
+  /* edit mode */
+  .edit li { flex-wrap: wrap; }
+  .edit input[type=text], .edit input[type=url] {
+    flex: 1 1 160px; min-width: 0; padding: 7px 9px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit;
+  }
+  .note { color: var(--muted); font-size: 13px; margin-top: 16px; }
+  .celebrate { text-align: center; font-size: 18px; margin: 0 0 20px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Daily Games</h1>
+    <span class="date" id="date"></span>
+  </header>
+  <div class="stats">
+    <span>Today: <b id="count">0/0</b></span>
+    <span>Streak: <b id="streak">0</b> 🔥</span>
+    <span>Best: <b id="best">0</b></span>
+  </div>
+  <div class="progress"><div id="bar"></div></div>
+
+  <div id="play">
+    <p class="celebrate" id="celebrate" hidden>All done for today! 🎉 See you tomorrow.</p>
+    <button class="next" id="next"></button>
+    <p class="hint">Press <kbd>Enter</kbd> or <kbd>Space</kbd> to open the next game in a new tab. Come back here when you finish it.</p>
+    <ol id="list"></ol>
+    <div class="row">
+      <button class="btn" id="openAll" title="Your browser may ask you to allow pop-ups the first time">Open all in tabs</button>
+      <button class="btn" id="resetToday">Reset today</button>
+      <button class="btn" id="editBtn">Edit games</button>
+    </div>
+    <p class="note" id="popupNote" hidden>Your browser blocked some tabs. Click the pop-up icon in the address bar and choose “Always allow pop-ups” for this site, then try again.</p>
+  </div>
+
+  <div id="edit" hidden>
+    <ol id="editList" class="edit"></ol>
+    <div class="row">
+      <button class="btn" id="addGame">+ Add game</button>
+      <button class="btn danger" id="defaults">Restore defaults</button>
+      <button class="btn" id="saveEdit" style="margin-left:auto">Done</button>
+    </div>
+    <p class="note">Games are saved in this browser only. Order here is the order you play them in.</p>
+  </div>
+</main>
+
+<script>
+const DEFAULT_GAMES = [
+  { name: "Wordle România", url: "https://wordle.ro/" },
+  { name: "Wordle", url: "https://www.nytimes.com/games/wordle/index.html" },
+  { name: "Connections", url: "https://www.nytimes.com/games/connections" },
+  { name: "Size It Up", url: "https://sizeitup.games/" },
+  { name: "GeoGuessr Daily Challenge", url: "https://www.geoguessr.com/daily-challenges" },
+];
+
+const KEY = "dailyGames.v1";
+const $ = (id) => document.getElementById(id);
+
+function load() {
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if (s && Array.isArray(s.games)) return s;
+  } catch (e) {}
+  return { games: structuredClone(DEFAULT_GAMES), day: today(), done: [], streak: 0, best: 0, lastComplete: null };
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+function today(d = new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function yesterday() { const d = new Date(); d.setDate(d.getDate() - 1); return today(d); }
+
+let state = load();
+
+// New day: clear checkmarks, keep streak only if yesterday was completed.
+function rollDay() {
+  if (state.day !== today()) {
+    state.day = today();
+    state.done = [];
+  }
+  if (state.lastComplete !== today() && state.lastComplete !== yesterday()) state.streak = 0;
+  save();
+}
+
+function isDone(g) { return state.done.includes(g.url); }
+function nextGame() { return state.games.find((g) => !isDone(g)); }
+
+function markDone(g, value = true) {
+  state.done = state.done.filter((u) => u !== g.url);
+  if (value) state.done.push(g.url);
+  const allDone = state.games.length > 0 && state.games.every(isDone);
+  if (allDone && state.lastComplete !== today()) {
+    state.streak = state.lastComplete === yesterday() ? state.streak + 1 : 1;
+    state.best = Math.max(state.best, state.streak);
+    state.lastComplete = today();
+  } else if (!allDone && state.lastComplete === today()) {
+    // Undo today's completion if a game gets unchecked.
+    state.streak = Math.max(0, state.streak - 1);
+    state.lastComplete = state.streak > 0 ? yesterday() : null;
+  }
+  save();
+  render();
+}
+
+function host(url) { try { return new URL(url).hostname.replace(/^www\./, ""); } catch (e) { return url; } }
+
+function render() {
+  const games = state.games;
+  const doneCount = games.filter(isDone).length;
+  const next = nextGame();
+
+  $("date").textContent = new Date().toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
+  $("count").textContent = `${doneCount}/${games.length}`;
+  $("streak").textContent = state.streak;
+  $("best").textContent = state.best;
+  $("bar").style.width = games.length ? `${(doneCount / games.length) * 100}%` : "0";
+
+  $("next").disabled = !next;
+  $("next").textContent = next ? (doneCount === 0 ? `▶ Start: ${next.name}` : `▶ Next: ${next.name}`) : "✓ All done";
+  $("celebrate").hidden = !!next || games.length === 0;
+
+  const list = $("list");
+  list.innerHTML = "";
+  games.forEach((g, i) => {
+    const li = document.createElement("li");
+    if (isDone(g)) li.classList.add("done");
+    if (g === next) li.classList.add("current");
+    li.innerHTML = `<span class="num">${i + 1}</span>
+      <span class="name"><a target="_blank" rel="noopener"></a><small></small></span>
+      <input type="checkbox" title="Mark as done">`;
+    const a = li.querySelector("a");
+    a.href = g.url; a.textContent = g.name;
+    a.addEventListener("click", () => markDone(g));
+    li.querySelector("small").textContent = host(g.url);
+    const cb = li.querySelector("input");
+    cb.checked = isDone(g);
+    cb.addEventListener("change", () => markDone(g, cb.checked));
+    list.appendChild(li);
+  });
+}
+
+function openNext() {
+  const g = nextGame();
+  if (!g) return;
+  window.open(g.url, "_blank", "noopener");
+  markDone(g);
+}
+
+function openAll() {
+  let blocked = false;
+  state.games.filter((g) => !isDone(g)).forEach((g) => {
+    const w = window.open(g.url, "_blank");
+    if (!w) blocked = true;
+    else { try { w.opener = null; } catch (e) {} markDone(g); }
+  });
+  $("popupNote").hidden = !blocked;
+}
+
+// ---- edit mode ----
+let draft = [];
+function renderEdit() {
+  const list = $("editList");
+  list.innerHTML = "";
+  draft.forEach((g, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="num">${i + 1}</span>
+      <input type="text" placeholder="Name">
+      <input type="url" placeholder="https://…">
+      <button class="btn icon" title="Move up">↑</button>
+      <button class="btn icon" title="Move down">↓</button>
+      <button class="btn icon danger" title="Remove">✕</button>`;
+    const [name, url] = li.querySelectorAll("input");
+    name.value = g.name; url.value = g.url;
+    name.addEventListener("input", () => (g.name = name.value));
+    url.addEventListener("input", () => (g.url = url.value.trim()));
+    const [up, down, del] = li.querySelectorAll("button");
+    up.onclick = () => { if (i > 0) { [draft[i - 1], draft[i]] = [draft[i], draft[i - 1]]; renderEdit(); } };
+    down.onclick = () => { if (i < draft.length - 1) { [draft[i + 1], draft[i]] = [draft[i], draft[i + 1]]; renderEdit(); } };
+    del.onclick = () => { draft.splice(i, 1); renderEdit(); };
+    list.appendChild(li);
+  });
+}
+function showEdit(on) {
+  $("play").hidden = on;
+  $("edit").hidden = !on;
+  if (on) { draft = structuredClone(state.games); renderEdit(); }
+}
+
+$("next").onclick = openNext;
+$("openAll").onclick = openAll;
+$("resetToday").onclick = () => { state.done = []; markDone({ url: "" }, false); };
+$("editBtn").onclick = () => showEdit(true);
+$("addGame").onclick = () => { draft.push({ name: "", url: "" }); renderEdit(); $("editList").lastChild.querySelector("input").focus(); };
+$("defaults").onclick = () => { draft = structuredClone(DEFAULT_GAMES); renderEdit(); };
+$("saveEdit").onclick = () => {
+  state.games = draft
+    .filter((g) => g.url)
+    .map((g) => ({ name: g.name.trim() || host(g.url), url: /^https?:\/\//.test(g.url) ? g.url : "https://" + g.url }));
+  state.done = state.done.filter((u) => state.games.some((g) => g.url === u));
+  save();
+  showEdit(false);
+  render();
+};
+
+document.addEventListener("keydown", (e) => {
+  if (!$("play").hidden && (e.key === "Enter" || e.key === " ") && !e.target.closest("input, button, a")) {
+    e.preventDefault();
+    openNext();
+  }
+});
+// Re-check the date when you come back to the tab (e.g. left open overnight).
+document.addEventListener("visibilitychange", () => { if (!document.hidden) { rollDay(); render(); } });
+
+rollDay();
+render();
+</script>
+</body>
+</html>
