@@ -7,7 +7,7 @@
 <title>Daily Games</title>
 <script>
   // Apply the saved theme before the page paints, so there's no flash of the default one.
-  try { const t = localStorage.getItem("amphoitza.theme"); if (["win98"].includes(t)) document.documentElement.dataset.theme = t; } catch (e) {}
+  try { const t = localStorage.getItem("amphoitza.theme"); if (["win98", "xp"].includes(t)) document.documentElement.dataset.theme = t; } catch (e) {}
 </script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='6' y='6' width='88' height='88' rx='14' fill='%23ffd23f' stroke='%23111' stroke-width='8'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23111' font-family='Arial Black,Arial' font-weight='900'>D</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -359,16 +359,158 @@
   [data-theme="win98"] .edit input:focus { box-shadow: var(--field); outline: 1px dotted #000; }
   [data-theme="win98"] .theme.selected { outline: 1px dotted #fff; outline-offset: 3px; }
 
+  /* ---------- Windows XP (after XP.css by Adam Hammad) ----------
+     Luna blue windows over a Bliss-style sky, a green "start"-style play button,
+     an Explorer-style game list, a balloon tip when you finish, and the action buttons
+     docked in a taskbar at the bottom of the screen. */
+  [data-theme="xp"] {
+    --paper: #ece9d8; --card: #ece9d8; --dim: #ffffff; --ink: #000000; --ink-soft: #555555; --line: #0831d9;
+    --yellow: #316ac5; --pink: #316ac5; --success: #2fa82f; --danger: #e32424; --on-c: #ffffff;
+    --g-wordleRo: #ffd23f; --g-wordle: #48b148; --g-connections: #9b59d0; --g-size: #ff8c1a; --g-geo: #2d7ff0;
+    --display: Tahoma, "Segoe UI", Verdana, sans-serif; --mono: var(--display);
+    --title-font: "Trebuchet MS", Tahoma, sans-serif;
+    --xp-title: linear-gradient(180deg, #0997ff, #0053ee 8%, #0050ee 40%, #06f 88%, #06f 93%, #005bff 95%, #003dd7 96%, #003dd7);
+    --xp-frame: inset -1px -1px #00138c, inset 1px 1px #0831d9, inset -2px -2px #001ea0, inset 2px 2px #166aee, inset -3px -3px #003bda, inset 3px 3px #0855dd;
+    --xp-btn: linear-gradient(180deg, #fff, #ecebe6 86%, #d8d0c4);
+    --xp-btn-hover: inset -1px 1px #fff0cf, inset 1px 2px #fdd889, inset -2px 2px #fbc761, inset 2px -2px #e5a01a;
+    --shadow: none; --shadow-lg: none;
+    color-scheme: light;
+  }
+  [data-theme="xp"] body {
+    font-size: 12px;
+    background:
+      radial-gradient(ellipse 34% 9% at 22% 22%, rgba(255,255,255,.9), transparent 70%),
+      radial-gradient(ellipse 26% 7% at 72% 14%, rgba(255,255,255,.75), transparent 70%),
+      radial-gradient(ellipse 20% 6% at 88% 34%, rgba(255,255,255,.6), transparent 70%),
+      radial-gradient(ellipse 120% 52% at 32% 102%, #57b23a 0 58%, transparent 59%),
+      radial-gradient(ellipse 95% 44% at 95% 104%, #469c2c 0 58%, transparent 59%),
+      linear-gradient(180deg, #2468d8 0%, #4f97ec 42%, #a9cff6 72%, #cfe4fa 100%);
+    background-attachment: fixed;
+  }
+  [data-theme="xp"] main { padding-bottom: 80px; }
+  [data-theme="xp"] h1 { font: italic 700 48px/1 var(--title-font); text-transform: none; letter-spacing: -0.02em; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,.45); }
+  [data-theme="xp"] h1 span { background: none; border: 0; box-shadow: none; transform: none; padding: 0; margin-top: 2px; color: #ff7b1c; text-shadow: 2px 2px 4px rgba(0,0,0,.45); }
+  [data-theme="xp"] :is(.stamp-date, .stat, #list, .clip-card, .theme) {
+    position: relative; border: 0; border-radius: 8px 8px 0 0; background: #ece9d8; color: #000;
+    box-shadow: var(--xp-frame), 4px 6px 14px rgba(0,0,0,.35); transform: none;
+  }
+  /* Blue title bar with the three window buttons, drawn on the window itself. */
+  [data-theme="xp"] :is(#list, .clip-card)::before {
+    display: block; height: 26px; padding: 0 70px 0 10px; border-radius: 7px 7px 0 0; margin: 0 0 3px;
+    background: var(--xp-title); color: #fff; font: 700 13px/26px var(--title-font); text-shadow: 1px 1px #0f1089;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  [data-theme="xp"] :is(#list, .clip-card)::after {
+    content: "\2013  \25A1  \2715"; position: absolute; top: 4px; right: 6px; height: 18px; padding: 0 4px; border-radius: 3px;
+    color: #fff; font: 700 11px/18px var(--display); letter-spacing: 4px; pointer-events: none;
+  }
+  [data-theme="xp"] #list::before { content: "My Games"; }
+  [data-theme="xp"] .clip-card::before { content: "Clip of the day \2014  Windows Media Player"; }
+  [data-theme="xp"] .stamp-date { padding: 22px 12px 8px; font: 11px var(--display); text-transform: none; letter-spacing: 0; text-align: center; }
+  [data-theme="xp"] .stamp-date::before { content: "Clock"; position: absolute; left: 0; right: 0; top: 0; height: 18px; border-radius: 7px 7px 0 0; background: var(--xp-title); color: #fff; font: 700 11px/18px var(--title-font); text-shadow: 1px 1px #0f1089; }
+  [data-theme="xp"] .stamp-date b { font: 700 24px var(--title-font); }
+  [data-theme="xp"] .stats { gap: 12px; }
+  [data-theme="xp"] .stat { padding: 0 3px 3px; }
+  [data-theme="xp"] .stat small { margin: 0 -3px 6px; padding: 3px 8px; border-radius: 7px 7px 0 0; background: var(--xp-title); color: #fff; font: 700 12px var(--title-font); letter-spacing: 0; text-transform: none; text-shadow: 1px 1px #0f1089; }
+  [data-theme="xp"] .stat b { display: block; padding: 0 8px 6px; font: 700 24px var(--title-font); letter-spacing: 0; }
+  [data-theme="xp"] .segs { gap: 6px; }
+  [data-theme="xp"] .seg { height: 18px; padding: 2px; border: 1px solid #686868; border-radius: 3px; background: #fff; }
+  [data-theme="xp"] .seg i { background: repeating-linear-gradient(90deg, #36c636 0 8px, transparent 8px 10px) !important; border-radius: 1px; }
+  [data-theme="xp"] .play {
+    border: 1px solid #1b5e1b; border-radius: 12px; color: #fff; padding: 12px 16px;
+    background: linear-gradient(180deg, #74d46d 0%, #3fa83a 12%, #349a30 55%, #2a8a27 88%, #1f6e1d 100%);
+    box-shadow: inset 0 1px rgba(255,255,255,.45), 3px 5px 12px rgba(0,0,0,.35); text-shadow: 1px 1px 2px rgba(0,0,0,.45);
+  }
+  [data-theme="xp"] .play:hover { transform: none; filter: brightness(1.08); box-shadow: inset 0 1px rgba(255,255,255,.45), 3px 5px 12px rgba(0,0,0,.35); }
+  [data-theme="xp"] .play:active { transform: none; filter: brightness(.92); box-shadow: inset 0 2px 6px rgba(0,0,0,.35); }
+  [data-theme="xp"] .play small { font: 700 11px var(--display); letter-spacing: 0; text-transform: none; opacity: .9; }
+  [data-theme="xp"] .play strong { font: italic 700 26px var(--title-font); letter-spacing: 0; }
+  [data-theme="xp"] .play .go { width: 44px; height: 44px; border: 2px solid rgba(255,255,255,.85); background: radial-gradient(circle at 35% 30%, #8fe08a, #2f8f2b 70%); color: #fff; animation: none; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+  [data-theme="xp"] .play.finished { background: linear-gradient(180deg, #fff, #ecebe6 86%, #d8d0c4); border-color: #003c74; color: #000; text-shadow: none; }
+  [data-theme="xp"] :is(.hint, .note) { font: 11px var(--display); color: #000; background: rgba(255,255,225,.92); border: 1px solid #a0a0a0; border-radius: 4px; }
+  [data-theme="xp"] kbd { font: 11px var(--display); border: 1px solid #003c74; border-radius: 3px; background: var(--xp-btn); }
+  [data-theme="xp"] #list { gap: 0; padding: 0 3px 3px; }
+  [data-theme="xp"] #list .tile { margin: 0 4px; padding: 6px 8px; gap: 10px; border: 1px solid transparent; border-radius: 2px; background: #fff; box-shadow: none; transform: none; }
+  [data-theme="xp"] #list .tile:first-of-type { margin-top: 4px; }
+  [data-theme="xp"] #list .tile:last-of-type { margin-bottom: 4px; }
+  [data-theme="xp"] #list .tile:hover { transform: none; box-shadow: none; background: #e8eff9; border-color: #c1d2ee; }
+  [data-theme="xp"] #list .tile.current { outline: none; background: #316ac5; border-color: #316ac5; }
+  [data-theme="xp"] #list .tile.current :is(.info a, .info small, .idx) { color: #fff; }
+  [data-theme="xp"] .badge { width: 40px; height: 40px; border: 1px solid #7f9db9; border-radius: 4px; }
+  [data-theme="xp"] .badge svg { width: 28px; height: 28px; }
+  [data-theme="xp"] .info a { font: 700 13px var(--display); letter-spacing: 0; }
+  [data-theme="xp"] :is(.info small, .idx) { font: 11px var(--display); color: #555; }
+  [data-theme="xp"] .check { width: 20px; height: 20px; border: 1px solid #1c5180; border-radius: 2px; background: linear-gradient(135deg, #dcdcd7, #fff); box-shadow: none; }
+  [data-theme="xp"] .check:active { transform: none; }
+  [data-theme="xp"] .check svg { width: 14px; height: 14px; stroke: #21a121; stroke-width: 4; }
+  [data-theme="xp"] #list .tile.done { transform: none; box-shadow: none; background: #fff; }
+  [data-theme="xp"] #list .tile.done.current, [data-theme="xp"] .tile.done .check { background: #fff; }
+  [data-theme="xp"] .tile.done .info a { color: #888; }
+  [data-theme="xp"] .stamp { display: none; }
+  /* Taskbar */
+  [data-theme="xp"] #play > .row {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: center; gap: 4px; margin: 0;
+    padding: 4px 8px calc(4px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(180deg, #1f2f86 0, #3165c4 3%, #3682e5 6%, #4490e6 10%, #3883e5 12%, #2b71e0 15%, #2663da 18%, #235bd6 20%, #2258d5 23%, #2157d6 38%, #245ddb 54%, #2562df 86%, #245fdc 89%, #2158d4 92%, #1d4ec0 95%, #1941a5 98%);
+  }
+  [data-theme="xp"] #play > .row .spacer { display: block; flex: 1; }
+  [data-theme="xp"] #play > .row .btn {
+    min-width: 0; padding: 6px 12px; border: 1px solid rgba(0,0,0,.3); border-radius: 3px; color: #fff;
+    background: linear-gradient(180deg, #3c8cf3, #2e75e6 50%, #2a68d8); box-shadow: inset 1px 1px rgba(255,255,255,.3);
+    font: 11px var(--display); text-transform: none; letter-spacing: 0;
+  }
+  [data-theme="xp"] #play > .row .btn:hover { background: linear-gradient(180deg, #5aa2f7, #3f86ee 50%, #3478e3); color: #fff; }
+  [data-theme="xp"] #play > .row .btn:active { transform: none; background: #1e52b7; box-shadow: inset 1px 1px 2px rgba(0,0,0,.5); }
+  [data-theme="xp"] #play > .row #openAll {
+    padding: 6px 18px 6px 14px; border: 0; border-radius: 0 12px 12px 0; margin-left: -8px;
+    background: linear-gradient(180deg, #3c9b3c, #3fa83a 12%, #2f8a2f 85%, #1f6b1f); font: italic 700 15px var(--title-font); text-shadow: 1px 1px 2px rgba(0,0,0,.5);
+  }
+  [data-theme="xp"] #play > .row #openAll:hover { background: linear-gradient(180deg, #4cb24c, #48b844 12%, #379a37 85%, #267c26); }
+  [data-theme="xp"] .btn {
+    border: 1px solid #003c74; border-radius: 3px; background: var(--xp-btn); color: #000; box-shadow: none;
+    font: 11px var(--display); text-transform: none; letter-spacing: 0; padding: 5px 14px; min-width: 75px;
+  }
+  [data-theme="xp"] .btn:hover { background: var(--xp-btn); color: #000; box-shadow: var(--xp-btn-hover); }
+  [data-theme="xp"] .btn:active { transform: none; background: linear-gradient(180deg, #cdcac3, #e3e3db 8%, #e5e5de 94%, #f2f2f1); box-shadow: none; }
+  /* "You're done" is an XP balloon tip. */
+  [data-theme="xp"] .banner {
+    position: relative; padding: 10px 14px 10px 40px; border: 1px solid #000; border-radius: 8px; background: #ffffe1; color: #000;
+    box-shadow: 3px 4px 8px rgba(0,0,0,.35); font: 700 12px var(--display); letter-spacing: 0; text-align: left; animation: none;
+  }
+  [data-theme="xp"] .banner::before { content: "i"; position: absolute; left: 12px; top: 11px; width: 18px; height: 18px; border-radius: 50%; background: #2d7ff0; color: #fff; font: italic 700 13px/18px Georgia, serif; text-align: center; }
+  [data-theme="xp"] .banner small { font: 11px var(--display); }
+  [data-theme="xp"] :is(.clip-head h2, .section-title) { color: #fff; font: italic 700 22px var(--title-font); text-transform: none; letter-spacing: 0; text-shadow: 2px 2px 4px rgba(0,0,0,.45); }
+  [data-theme="xp"] .clip-head h2 span { background: none; border: 0; transform: none; padding: 0; color: #ff7b1c; }
+  [data-theme="xp"] .clip-card { padding: 0 3px 3px; overflow: visible; }
+  [data-theme="xp"] .clip-wrap, [data-theme="xp"] .clip-frame { border: 0; }
+  [data-theme="xp"] .clip-meta .t { font: 700 12px var(--display); }
+  [data-theme="xp"] .pill { border: 1px solid #003c74; border-radius: 3px; background: var(--xp-btn); color: #000; font: 11px var(--display); text-transform: none; letter-spacing: 0; }
+  [data-theme="xp"] .theme { border-radius: 8px; overflow: hidden; }
+  [data-theme="xp"] .theme:hover { transform: none; box-shadow: var(--xp-frame), 4px 6px 14px rgba(0,0,0,.35); filter: brightness(1.04); }
+  [data-theme="xp"] .theme.selected { outline: 2px solid #ff7b1c; outline-offset: 3px; }
+  [data-theme="xp"] .edit input { border: 1px solid #7f9db9; border-radius: 0; background: #fff; font: 12px var(--display); color: #000; }
+  [data-theme="xp"] .edit input:focus { box-shadow: none; outline: 1px solid #316ac5; }
+  [data-theme="xp"] .edit .tile { border: 0; border-radius: 8px 8px 0 0; background: #ece9d8; box-shadow: var(--xp-frame); }
+
   /* ---------- previews in the theme picker ---------- */
   .theme .nm { font-family: var(--display); }
   .theme[data-theme="win98"] .pv { background: #008080; border-bottom: 2px solid #808080; }
   .theme[data-theme="win98"] :is(.pv-card, .pv-btn) { border: 0; border-radius: 0; background: #c0c0c0; box-shadow: var(--raised); }
   .theme[data-theme="win98"] .pv-card { border-top: 7px solid #000080; height: 26px; }
   .theme[data-theme="win98"] .nm { font-size: 13px; letter-spacing: 0; }
+  .theme[data-theme="xp"] .pv { background: radial-gradient(ellipse 120% 60% at 30% 110%, #57b23a 0 58%, transparent 59%), linear-gradient(180deg, #2468d8, #a9cff6); border-bottom: 0; }
+  .theme[data-theme="xp"] :is(.pv-card, .pv-btn) { border: 0; box-shadow: none; }
+  .theme[data-theme="xp"] .pv-card { border-radius: 5px 5px 0 0; background: #ece9d8; border-top: 7px solid #0053ee; height: 26px; }
+  .theme[data-theme="xp"] .pv-btn { border-radius: 8px; background: linear-gradient(180deg, #74d46d, #2a8a27); }
+  .theme[data-theme="xp"] .nm { font: italic 700 15px "Trebuchet MS", Tahoma, sans-serif; }
 
   /* ---------- skins on phones ---------- */
   @media (max-width: 480px) {
     [data-theme="win98"] h1 { font-size: 30px; }
+    [data-theme="xp"] h1 { font-size: 36px; }
+    [data-theme="xp"] .play strong { font-size: 21px; }
+    [data-theme="xp"] #play > .row .btn { padding: 6px 8px; }
+    [data-theme="xp"] #play > .row #openAll { padding: 6px 12px 6px 10px; font-size: 13px; }
   }
 </style>
 </head>
@@ -717,6 +859,7 @@ function showEdit(on) {
 const THEMES = [
   { id: "amphoitza", name: "Amphoitza", by: "Original · follows light/dark" },
   { id: "win98", name: "Windows 98", by: "after 98.css by Jordan Scales" },
+  { id: "xp", name: "Windows XP", by: "after XP.css by Adam Hammad" },
 ];
 const THEME_KEY = "amphoitza.theme";
 
