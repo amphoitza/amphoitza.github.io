@@ -7,7 +7,7 @@
 <title>Daily Games</title>
 <script>
   // Apply the saved theme before the page paints, so there's no flash of the default one.
-  try { const t = localStorage.getItem("amphoitza.theme"); if (["win98", "xp", "royale"].includes(t)) document.documentElement.dataset.theme = t; } catch (e) {}
+  try { let t = null; try { t = localStorage.getItem("amphoitza.theme"); } catch (e) {} t = t || "royale"; if (["win98", "xp", "royale"].includes(t)) document.documentElement.dataset.theme = t; } catch (e) {}
 </script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='6' y='6' width='88' height='88' rx='14' fill='%23ffd23f' stroke='%23111' stroke-width='8'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23111' font-family='Arial Black,Arial' font-weight='900'>D</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1069,17 +1069,18 @@ function showEdit(on) {
 // Each skin restyles the whole page after a well-known existing design; the CSS lives in <style id="skins">.
 // (Keep the ids in sync with the early theme script in <head>.)
 const THEMES = [
-  { id: "amphoitza", name: "Amphoitza", by: "Original · follows light/dark" },
+  { id: "amphoitza", name: "Amphoitza", by: "The original look · follows light/dark" },
   { id: "win98", name: "Windows 98", by: "after 98.css by Jordan Scales" },
   { id: "xp", name: "Windows XP", by: "after XP.css by Adam Hammad" },
-  { id: "royale", name: "Clash Royale", by: "fan theme · all art drawn from scratch" },
+  { id: "royale", name: "Clash Royale", by: "Default · fan theme, art drawn from scratch" },
 ];
 const THEME_KEY = "amphoitza.theme";
+const DEFAULT_THEME = "royale"; // used until someone picks a theme (keep in sync with the early script in <head>)
 
 function currentTheme() {
-  let id = "amphoitza";
+  let id = DEFAULT_THEME;
   try { id = localStorage.getItem(THEME_KEY) || id; } catch (e) {}
-  return THEMES.some((t) => t.id === id) ? id : "amphoitza";
+  return THEMES.some((t) => t.id === id) ? id : DEFAULT_THEME;
 }
 function applyTheme(id) {
   if (id === "amphoitza") document.documentElement.removeAttribute("data-theme");
