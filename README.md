@@ -7,6 +7,7 @@ A one-page launcher for my daily games, played in order:
 3. Connections (NYT)
 4. Size It Up
 5. GeoGuessr Daily Challenge
+6. Legături — a daily Romanian word-grouping puzzle, hosted here under [`legaturi/`](legaturi/)
 
 ## How to use
 

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Legături</title>
+<meta name="description" content="Un joc zilnic de cuvinte: găsește cele patru grupe a câte patru cuvinte.">
+<meta name="theme-color" content="#f8f4ec">
+<link rel="icon" href="assets/icon.svg?v=c51a4701" type="image/svg+xml">
+<script>
+  // Apply the saved theme before the page paints, so it never flashes the wrong one.
+  try { const t = JSON.parse(localStorage.getItem("legaturi.v1") || "{}").theme; if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=455ca128">
+</head>
+<body>
+<header class="top">
+  <button class="brand" id="btnHome" title="Puzzle-ul zilei">
+    <img src="assets/icon.svg?v=c51a4701" alt="" class="logo" width="34" height="34">
+    <span class="name">Legături</span>
+  </button>
+  <nav class="tools" aria-label="Meniu">
+    <button class="icon-btn" id="btnArchive" title="Arhivă" aria-label="Arhivă">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+    </button>
+    <button class="icon-btn" id="btnStats" title="Statistici" aria-label="Statistici">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V12M12 20V5M19 20v-5"/></svg>
+    </button>
+    <button class="icon-btn" id="btnHelp" title="Cum se joacă" aria-label="Cum se joacă">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.3c-.7.3-1 .8-1 1.5v.5"/><circle cx="12" cy="16.9" r=".4"/></svg>
+    </button>
+    <button class="icon-btn" id="btnTheme" title="Temă întunecată" aria-label="Temă întunecată">
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 14.6A8 8 0 0 1 9.4 4.5a8 8 0 1 0 10.1 10.1z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg>
+    </button>
+  </nav>
+</header>
+<div class="motif" aria-hidden="true"></div>
+
+<main class="game" id="game">
+  <p class="meta"><span id="puzzleNo"></span><span class="sep" aria-hidden="true">·</span><span id="puzzleDate"></span></p>
+  <p class="prompt" id="prompt">Formează patru grupe a câte patru cuvinte!</p>
+
+  <section class="board" id="board" aria-label="Tabla de joc"></section>
+
+  <div class="mistakes" id="mistakes">
+    <span>Greșeli rămase:</span>
+    <span class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="sr" id="mistakesText"></span>
+  </div>
+
+  <div class="controls" id="controls">
+    <button class="btn" id="btnShuffle">Amestecă</button>
+    <button class="btn" id="btnDeselect" disabled>Deselectează tot</button>
+    <button class="btn primary" id="btnSubmit" disabled>Trimite</button>
+  </div>
+
+  <div class="controls" id="after" hidden>
+    <button class="btn primary" id="btnResults">Vezi rezultatul</button>
+    <button class="btn" id="btnMore">Joacă din arhivă</button>
+  </div>
+
+  <p class="back" id="back" hidden><button class="link" id="btnToday">← Înapoi la puzzle-ul zilei</button></p>
+</main>
+
+<section class="empty" id="empty" hidden>
+  <h2>Gata pentru azi</h2>
+  <p>Puzzle-urile noi sunt pe drum. Până atunci, poți juca orice puzzle din arhivă.</p>
+  <button class="btn primary" id="btnEmptyArchive">Deschide arhiva</button>
+</section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<dialog class="modal" id="dlgHelp" aria-labelledby="helpTitle">
+  <button class="close" data-close aria-label="Închide">×</button>
+  <h2 id="helpTitle">Cum se joacă</h2>
+  <p>Găsește grupele de câte patru cuvinte care au ceva în comun.</p>
+  <ul>
+    <li>Alege patru cuvinte și apasă <b>Trimite</b>.</li>
+    <li>Ai voie la patru greșeli. Dacă trei din patru cuvinte sunt bune, primești „Aproape!”.</li>
+    <li>Fiecare puzzle are o singură soluție. Ai grijă la cuvintele care par să meargă în mai multe grupe!</li>
+  </ul>
+  <h3>Exemple</h3>
+  <div class="example" data-level="0"><b>Instrumente populare</b><span>NAI, CAVAL, CIMPOI, ȚAMBAL</span></div>
+  <div class="example" data-level="3"><b>___ de zăpadă</b><span>OM, FULG, BULGĂRE, PLUG</span></div>
+  <p>Legătura e mereu mai precisă decât „substantive” sau „cuvinte scurte”. Uneori ține de sens, alteori de joc de cuvinte.</p>
+  <h3>Culori</h3>
+  <p>Fiecare grupă primește o culoare, după cât de greu se găsește:</p>
+  <div class="legend">
+    <span data-level="0"></span><span data-level="1"></span><span data-level="2"></span><span data-level="3"></span>
+  </div>
+  <div class="legend-labels"><span>ușor</span><span>greu</span></div>
+  <p class="note">Un puzzle nou apare în fiecare zi, la miezul nopții. Cele vechi rămân în arhivă.</p>
+  <button class="btn primary wide" data-close>Joacă</button>
+</dialog>
+
+<dialog class="modal" id="dlgStats" aria-labelledby="statsTitle">
+  <button class="close" data-close aria-label="Închide">×</button>
+  <div class="result" id="result" hidden>
+    <h2 class="result-title" id="resultTitle"></h2>
+    <p class="result-sub" id="resultSub"></p>
+    <div class="mini" id="mini" aria-hidden="true"></div>
+    <button class="btn primary wide" id="btnShare">Copiază rezultatul</button>
+    <p class="next" id="nextLine">Următorul puzzle în <b id="countdown">--:--:--</b></p>
+  </div>
+  <h2 id="statsTitle">Statistici</h2>
+  <div class="numbers">
+    <div><b id="stPlayed">0</b><small>Jucate</small></div>
+    <div><b id="stWin">0</b><small>% câștigate</small></div>
+    <div><b id="stCurrent">0</b><small>Serie actuală</small></div>
+    <div><b id="stBest">0</b><small>Serie maximă</small></div>
+    <div><b id="stPerfect">0</b><small>Perfecte</small></div>
+  </div>
+  <h3>Greșeli pe joc</h3>
+  <div class="bars" id="bars"></div>
+  <p class="note">Seria crește doar cu puzzle-ul zilei, rezolvat chiar în ziua lui.</p>
+</dialog>
+
+<dialog class="modal" id="dlgArchive" aria-labelledby="archiveTitle">
+  <button class="close" data-close aria-label="Închide">×</button>
+  <h2 id="archiveTitle">Arhivă</h2>
+  <p class="note" id="archiveNote"></p>
+  <ol class="archive" id="archiveList"></ol>
+</dialog>
+
+<script src="js/engine.js?v=fef730c1"></script>
+<script src="js/puzzles/01.js?v=278e3835"></script>
+<script src="js/puzzles/02.js?v=2216848b"></script>
+<script src="js/puzzles/03.js?v=db8e3679"></script>
+<script src="js/puzzles/04.js?v=14c9b5a3"></script>
+<script src="js/puzzles/05.js?v=6154615f"></script>
+<script src="js/puzzles/06.js?v=ade5e93c"></script>
+<script src="js/app.js?v=3067a618"></script>
+</body>
+</html>
