@@ -22,18 +22,18 @@
     id: 53,
     groups: [
       { title: "Păsări", words: ["POTÂRNICHE", "PREPELIȚĂ", "CURCAN", "PĂUN"] },
-      { title: "La croitorie", words: ["AȚA", "ACUL", "FOARFECA", "METRUL"] },
-      { title: "La tragerea cu arcul", words: ["SĂGEATA", "ȚINTA", "TOLBA", "ARCAȘUL"] },
-      { title: "Jocuri din copilărie", words: ["FAZAN", "ELASTICUL", "COARDA", "LEAPȘA"] },
+      { title: "La croitorie", words: ["AȚĂ", "AC", "FOARFECĂ", "DEGETAR"] },
+      { title: "La tragerea cu arcul", words: ["SĂGEATĂ", "ȚINTĂ", "TOLBĂ", "ARC"] },
+      { title: "Jocuri din copilărie", words: ["FAZAN", "ELASTIC", "COARDĂ", "LEAPȘĂ"] },
     ],
   },
   {
     id: 54,
     groups: [
-      { title: "Pentru toți", words: ["UNIVERSAL", "GLOBAL", "COLECTIV", "OBȘTESC"] },
-      { title: "Unelte de tâmplar", words: ["RINDEA", "DALTĂ", "MENGHINĂ", "FIERĂSTRĂU"] },
-      { title: "Pe o navă", words: ["TIMONIER", "BOCMAN", "MECANIC", "BUCĂTAR"] },
-      { title: "Grade militare", words: ["GENERAL", "SERGENT", "CAPORAL", "CĂPITAN"] },
+      { title: "Recipiente din sticlă", words: ["BORCAN", "CARAFĂ", "PAHAR", "HALBĂ"] },
+      { title: "Instrumente cu coarde", words: ["VIOARĂ", "MANDOLINĂ", "BANJO", "LĂUTĂ"] },
+      { title: "Haine groase", words: ["PALTON", "FULAR", "MĂNUȘI", "VESTĂ"] },
+      { title: "Au „gât”", words: ["STICLĂ", "VAZĂ", "CHITARĂ", "PULOVER"] },
     ],
   },
   {
@@ -57,7 +57,7 @@
   {
     id: 57,
     groups: [
-      { title: "Planete", words: ["MARTE", "JUPITER", "SATURN", "MERCUR"] },
+      { title: "Pe cer", words: ["SOARELE", "LUNA", "COMETA", "PLANETA"] },
       { title: "Ape", words: ["RÂUL", "IAZUL", "BALTA", "PÂRÂUL"] },
       { title: "Ce îți dorești", words: ["POFTA", "VREREA", "ASPIRAȚIA", "NĂZUINȚA"] },
       { title: "Poezii de Eminescu", words: ["LUCEAFĂRUL", "LACUL", "DORINȚA", "GLOSSA"] },
@@ -67,7 +67,7 @@
     id: 58,
     groups: [
       { title: "Înalți prelați", words: ["EPISCOP", "PATRIARH", "CARDINAL", "MITROPOLIT"] },
-      { title: "Somn scurt", words: ["SIESTĂ", "AȚIPEALĂ", "MOȚĂIALĂ", "PUI DE SOMN"] },
+      { title: "Somn scurt", words: ["SIESTĂ", "AȚIPEALĂ", "MOȚĂIALĂ", "REPAUS"] },
       { title: "Lovituri mici", words: ["ZGÂRIETURĂ", "JULITURĂ", "VÂNĂTAIE", "CUCUI"] },
       { title: "Cuvinte de bebeluș", words: ["NANI", "PAPA", "BUBA", "CUCU"] },
     ],
@@ -78,7 +78,7 @@
       { title: "Părți ale corpului", words: ["PICIOARELE", "UMERII", "GENUNCHII", "COATELE"] },
       { title: "Vase de gătit", words: ["OALELE", "CRATIȚELE", "TIGĂILE", "CEAUNELE"] },
       { title: "Construcții pe ape", words: ["DIGURILE", "BARAJELE", "ECLUZELE", "STĂVILARELE"] },
-      { title: "___ Dunării", words: ["CAZANELE", "BRAȚELE", "DELTA", "GURILE"] },
+      { title: "___ Dunării", words: ["CAZANELE", "BRAȚELE", "IZVOARELE", "GURILE"] },
     ],
   },
   {

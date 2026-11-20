@@ -12,10 +12,10 @@
   {
     id: 42,
     groups: [
-      { title: "De dată recentă", words: ["PROASPĂTĂ", "ACTUALĂ", "MODERNĂ", "INEDITĂ"] },
-      { title: "Pronume în dativ", words: ["ȚIE", "LUI", "VOUĂ", "LOR"] },
-      { title: "Fac o alegere", words: ["ALEG", "SELECTEZ", "PREFER", "DECID"] },
-      { title: "Sunt și numere", words: ["MIE", "NOUĂ", "OPT", "UNU"] },
+      { title: "În sala de clasă", words: ["TABLĂ", "BANCĂ", "CRETĂ", "BURETE"] },
+      { title: "La bancă", words: ["CONT", "CREDIT", "DOBÂNDĂ", "DEPOZIT"] },
+      { title: "Ciuperci comestibile", words: ["HRIB", "TRUFĂ", "GĂLBIOR", "PLEUROTUS"] },
+      { title: "Au „față”", words: ["PERNĂ", "MASĂ", "CEAS", "MONEDĂ"] },
     ],
   },
   {
@@ -41,7 +41,7 @@
     groups: [
       { title: "Păsări de pădure", words: ["CIOCĂNITOARE", "GAIȚĂ", "MIERLĂ", "PRIVIGHETOARE"] },
       { title: "Se coc în cuptor", words: ["PÂINE", "COVRIG", "PLĂCINTĂ", "COZONAC"] },
-      { title: "Cu chef, după câteva pahare", words: ["AFUMAT", "PILIT", "AMEȚIT", "CHERCHELIT"] },
+      { title: "Metale și aliaje", words: ["OȚEL", "BRONZ", "ALAMĂ", "FONTĂ"] },
       { title: "Beat ___", words: ["TURTĂ", "CRIȚĂ", "CUC", "MANGĂ"] },
     ],
   },
@@ -57,10 +57,10 @@
   {
     id: 47,
     groups: [
-      { title: "Inamic", words: ["ADVERSAR", "RIVAL", "POTRIVNIC", "VRĂJMAȘ"] },
-      { title: "Dat pe sub mână", words: ["ȘPAGĂ", "MITĂ", "ATENȚIE", "PLOCON"] },
-      { title: "Mici construcții de stradă", words: ["GHERETĂ", "STAND", "BUTIC", "TONETĂ"] },
-      { title: "Cuvinte venite din turcă", words: ["DUȘMAN", "BACȘIȘ", "CHIOȘC", "CIORBĂ"] },
+      { title: "Înfățișare, atitudine", words: ["AER", "ALURĂ", "POZĂ", "ȚINUTĂ"] },
+      { title: "Entuziasm, ardoare", words: ["FOC", "AVÂNT", "ZEL", "ELAN"] },
+      { title: "Teren agricol, moșie", words: ["PĂMÂNT", "OGOR", "GLIE", "ȚARINĂ"] },
+      { title: "A bate ___", words: ["APĂ", "CÂMPII", "PALMA", "TOBA"] },
     ],
   },
   {
@@ -84,10 +84,10 @@
   {
     id: 50,
     groups: [
-      { title: "Pui de animale", words: ["MIELUL", "IEDUL", "VIȚELUL", "PURCELUL"] },
-      { title: "Locuitori ai regiunilor", words: ["ARDELEANUL", "OLTEANUL", "BĂNĂȚEANUL", "MUNTEANUL"] },
-      { title: "La mănăstire", words: ["CĂLUGĂRUL", "STAREȚUL", "NOVICELE", "CLOPOTARUL"] },
-      { title: "Personaje din „Miorița”", words: ["MIORIȚA", "MĂICUȚA", "UNGUREANUL", "VRÂNCEANUL"] },
+      { title: "Unități de lungime", words: ["METRU", "INCH", "IARD", "MILĂ"] },
+      { title: "Îndurare, compasiune", words: ["COMPASIUNE", "CLEMENȚĂ", "ÎNDURARE", "CRUȚARE"] },
+      { title: "Termeni de croitorie", words: ["TIV", "CUSĂTURĂ", "TIPAR", "PENSĂ"] },
+      { title: "Au „ac”", words: ["ALBINĂ", "BRAD", "BUSOLĂ", "SERINGĂ"] },
     ],
   },
 );

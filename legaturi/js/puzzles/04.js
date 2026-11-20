@@ -3,43 +3,43 @@
   {
     id: 31,
     groups: [
-      { title: "Lunile anului", words: ["IUNIE", "IULIE", "AUGUST", "APRILIE"] },
-      { title: "Influență, sprijin", words: ["PROPTEA", "RELAȚII", "SPATE", "CUNOȘTINȚE"] },
-      { title: "La ușă", words: ["CLANȚĂ", "BALAMA", "PRAG", "YALĂ"] },
+      { title: "Lunile anului", words: ["IUNIE", "IULIE", "APRILIE", "MARTIE"] },
+      { title: "Elemente de închidere la ușă", words: ["YALĂ", "ZĂVOR", "LACĂT", "LANȚ"] },
+      { title: "Animale cu coarne", words: ["TAUR", "BERBEC", "CERB", "BIVOL"] },
       { title: "Sunt și unelte", words: ["MAI", "PILĂ", "CHEIE", "CAPRĂ"] },
     ],
   },
   {
     id: 32,
     groups: [
-      { title: "Păsări", words: ["BUFNIȚA", "BARZA", "RÂNDUNICA", "PIȚIGOIUL"] },
-      { title: "Părți ale corpului", words: ["PICIORUL", "CAPUL", "UMĂRUL", "GENUNCHIUL"] },
-      { title: "În curtea casei", words: ["LEMNĂRIA", "ȘOPRONUL", "CUȘCA", "GRĂDINA"] },
-      { title: "Nu da ___ din ___ pe ___ de pe ___", words: ["VRABIA", "MÂNA", "CIOARA", "GARDUL"] },
+      { title: "La box", words: ["RING", "MĂNUȘĂ", "GONG", "RUNDĂ"] },
+      { title: "La circ", words: ["CLOVN", "ACROBAT", "TRAPEZ", "CORT"] },
+      { title: "Patrulatere", words: ["ROMB", "PĂTRAT", "DREPTUNGHI", "PARALELOGRAM"] },
+      { title: "Încep cu un animal", words: ["CALENDAR", "LUPTĂ", "URSITOARE", "RACORD"] },
     ],
   },
   {
     id: 33,
     groups: [
-      { title: "La școală", words: ["PROFESOR", "DIRIGINTE", "DIRECTOR", "ÎNVĂȚĂTOR"] },
-      { title: "Puternic", words: ["ROBUST", "VÂNJOS", "ZDRAVĂN", "SPĂTOS"] },
-      { title: "Bucurie mare", words: ["EXTAZ", "EXALTARE", "JUBILAȚIE", "FERICIRE"] },
-      { title: "Încep cu un pronume personal", words: ["EUFORIE", "ELEV", "VOINIC", "TURIST"] },
+      { title: "La școală", words: ["PROFESOR", "DIRIGINTE", "DIRECTOR", "PEDAGOG"] },
+      { title: "Viguros, puternic", words: ["ROBUST", "VÂNJOS", "ZDRAVĂN", "SPĂTOS"] },
+      { title: "Bucurie mare", words: ["EXTAZ", "EXALTARE", "ÎNCÂNTARE", "FERICIRE"] },
+      { title: "Încep cu un pronume personal", words: ["EUFORIE", "ELEV", "VOINIC", "NOIAN"] },
     ],
   },
   {
     id: 34,
     groups: [
       { title: "Momente ale zilei", words: ["DIMINEAȚĂ", "AMIAZĂ", "SEARĂ", "ZORI"] },
-      { title: "Figuri geometrice", words: ["PĂTRAT", "TRIUNGHI", "ROMB", "TRAPEZ"] },
-      { title: "Animale din pădurile României", words: ["RÂS", "JDER", "MISTREȚ", "CĂPRIOARĂ"] },
+      { title: "Linii imaginare pe glob", words: ["ECUATOR", "MERIDIAN", "PARALELĂ", "TROPIC"] },
+      { title: "Pe cerul nopții", words: ["COMETĂ", "PLANETĂ", "NEBULOASĂ", "GALAXIE"] },
       { title: "___ polar(ă)", words: ["URS", "CERC", "STEA", "NOAPTE"] },
     ],
   },
   {
     id: 35,
     groups: [
-      { title: "Pantaloni", words: ["BLUGI", "COLANȚI", "ȘALVARI", "ITARI"] },
+      { title: "Pantaloni", words: ["BLUGI", "COLANȚI", "ȘALVARI", "IȚARI"] },
       { title: "Pălării", words: ["JOBEN", "MELON", "BORSALINO", "CANOTIERĂ"] },
       { title: "Insule și arhipelaguri", words: ["AZORE", "CANARE", "BALEARE", "MALDIVE"] },
       { title: "Haine care poartă nume de locuri", words: ["BERMUDE", "BIKINI", "PANAMA", "BALACLAVA"] },
@@ -48,26 +48,26 @@
   {
     id: 36,
     groups: [
-      { title: "Calități", words: ["RĂBDAREA", "BUNĂTATEA", "CINSTEA", "CREDINȚA"] },
-      { title: "Dau lumină", words: ["LANTERNA", "VEIOZA", "LAMPA", "LUMÂNAREA"] },
-      { title: "Muzică populară", words: ["HORA", "SÂRBA", "COLINDA", "BALADA"] },
-      { title: "Prenume care sunt și cuvinte", words: ["SPERANȚA", "LUMINIȚA", "DOINA", "STELUȚA"] },
+      { title: "Premii și trofee", words: ["CUPĂ", "MEDALIE", "DIPLOMĂ", "TROFEU"] },
+      { title: "Organe vitale", words: ["INIMĂ", "CREIER", "PLĂMÂN", "STOMAC"] },
+      { title: "Figuri geometrice", words: ["ROMB", "PENTAGON", "HEXAGON", "TRAPEZ"] },
+      { title: "Sunt și verbe, și substantive", words: ["PICĂ", "SARE", "POARTĂ", "PASĂ"] },
     ],
   },
   {
     id: 37,
     groups: [
       { title: "Conflict armat", words: ["BĂTĂLIE", "LUPTĂ", "ASALT", "ÎNCLEȘTARE"] },
-      { title: "Orașe din Asia", words: ["TOKIO", "BANGKOK", "SEUL", "HONG KONG"] },
-      { title: "Cărți de joc", words: ["AS", "POPĂ", "DAMĂ", "VALET"] },
-      { title: "Jocuri de cărți", words: ["MACAO", "RĂZBOI", "TABINET", "ȘEPTICĂ"] },
+      { title: "Orașe din Asia", words: ["TOKIO", "BANGKOK", "SEUL", "SHANGHAI"] },
+      { title: "Obiecte bisericești", words: ["ICOANĂ", "CANDELĂ", "CĂDELNIȚĂ", "POTIR"] },
+      { title: "Jocuri de cărți", words: ["MACAO", "RĂZBOI", "TABINET", "CRUCE"] },
     ],
   },
   {
     id: 38,
     groups: [
-      { title: "Într-o echipă de fotbal", words: ["PORTAR", "FUNDAȘ", "MIJLOCAȘ", "ATACANT"] },
-      { title: "Conducător absolut", words: ["DESPOT", "DICTATOR", "SATRAP", "ASUPRITOR"] },
+      { title: "Într-o echipă de fotbal", words: ["PORTAR", "FUNDAȘ", "ATACANT", "CĂPITAN"] },
+      { title: "Conducător autoritar", words: ["DESPOT", "DICTATOR", "SATRAP", "UZURPATOR"] },
       { title: "Pentru muzicieni", words: ["DIAPAZON", "PUPITRU", "ARCUȘ", "PARTITURĂ"] },
       { title: "Ascund un mijloc de transport", words: ["ANTRENOR", "TIRAN", "METRONOM", "AUTOGRAF"] },
     ],
@@ -77,17 +77,17 @@
     groups: [
       { title: "Fenomene meteo", words: ["GRINDINĂ", "VISCOL", "CEAȚĂ", "POLEI"] },
       { title: "Pentru pescuit", words: ["UNDIȚĂ", "MULINETĂ", "MOMEALĂ", "PLUTĂ"] },
-      { title: "Cresc în pământ", words: ["MORCOV", "PĂSTÂRNAC", "SFECLĂ", "ȚELINĂ"] },
-      { title: "Au ochi, dar nu văd", words: ["FURTUNĂ", "PLASĂ", "CARTOF", "LANȚ"] },
+      { title: "Rădăcinoase", words: ["MORCOV", "PĂSTÂRNAC", "SFECLĂ", "ȚELINĂ"] },
+      { title: "Au „ochi”", words: ["FURTUNĂ", "PLASĂ", "CARTOF", "ARAGAZ"] },
     ],
   },
   {
     id: 40,
     groups: [
-      { title: "Pe pat", words: ["PERNA", "PLAPUMA", "CEARȘAFUL", "PĂTURA"] },
-      { title: "Se poartă la talie", words: ["CUREAUA", "CENTURA", "CORDONUL", "BORSETA"] },
-      { title: "Arbuști", words: ["SOCUL", "MĂCEȘUL", "LILIACUL", "CORNUL"] },
-      { title: "Dansuri populare", words: ["BRÂUL", "CĂLUȘUL", "ALUNELUL", "PERINIȚA"] },
+      { title: "Băuturi spirtoase", words: ["ROM", "GIN", "VODCĂ", "CONIAC"] },
+      { title: "Dulciuri românești celebre", words: ["POIANA", "EUGENIA", "JOE", "MĂGURA"] },
+      { title: "Locuri în natură", words: ["LUMINIȘ", "DESIȘ", "LIZIERĂ", "PĂȘUNE"] },
+      { title: "Încep cu un prenume", words: ["ANAGRAMĂ", "DANUBIU", "ALINARE", "MARINAR"] },
     ],
   },
 );

@@ -8,6 +8,7 @@ A one-page launcher for my daily games, played in order:
 4. Size It Up
 5. GeoGuessr Daily Challenge
 6. Legături — a daily Romanian word-grouping puzzle, hosted here under [`legaturi/`](legaturi/)
+7. Perceptle — daily visual perception challenges
 
 ## How to use
 
