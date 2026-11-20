@@ -8,7 +8,7 @@ import json
 import pathlib
 import subprocess
 
-CHANNELS = ["baiatucucaiacu", "ggugateste"]
+CHANNELS = ["baiatucucaiacu", "ggugateste", "RIDICOL"]
 TABS = {"videos": "video", "shorts": "short"}
 OUT = pathlib.Path(__file__).resolve().parent.parent / "videos.json"
 
