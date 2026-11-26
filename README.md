@@ -9,6 +9,9 @@ A one-page launcher for my daily games, played in order:
 5. GeoGuessr Daily Challenge
 6. Legături — a daily Romanian word-grouping puzzle, hosted here under [`legaturi/`](legaturi/)
 7. Perceptle — daily visual perception challenges
+8. Fermi — daily estimation puzzle
+9. FactMap — where in the world is this fact?
+10. TimeGuessr — guess where and when a photo was taken
 
 ## How to use
 
